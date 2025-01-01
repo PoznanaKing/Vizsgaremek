@@ -1,0 +1,28 @@
+[
+  {
+    "ContainingType": "Backend_PM_Project.Controllers.UserController",
+    "Method": "GetExistingUser",
+    "RelativePath": "UserTable/GetExistingUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend_PM_Project.Controllers.UserController",
+    "Method": "RegisterNewUser",
+    "RelativePath": "UserTable/RegisterNewUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newUser",
+        "Type": "Backend_PM_Project.Models.RegisterNewUser",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
