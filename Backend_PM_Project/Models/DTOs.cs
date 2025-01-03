@@ -2,4 +2,5 @@
 {
     public record RegisterNewUser(string userName, string userPassword, string userEmail);
     public record ResetPasswordDTO(string userNewPassword, Guid userId);
+    public record DeleteUserByIdDTO(Guid userId);
 }

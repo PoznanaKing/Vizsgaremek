@@ -59,6 +59,18 @@ namespace Backend_PM_Project.Controllers
             }
             return NotFound(new { message = "Sikertelen a jelszó váltás!" });
         }
+        [HttpDelete("DeleteUserById")]
+        public async Task<ActionResult> DeleteUserById(DeleteUserByIdDTO deleteUser)
+        {
+            var user = await _Context.UserTables.FirstOrDefaultAsync(x=>x.Id== deleteUser.userId);
+            if (user!=null)
+            {
+                _Context.UserTables.Remove(user);
+                _Context.SaveChanges();
+                return StatusCode(200, new { message = "Sikeres törlés!" });
+            }
+            return NotFound(new { message = "Sikertelen törlés, mert a keresett azonosító alatt nincs ilyen felhasználó." });
+        }
 
     }
 }

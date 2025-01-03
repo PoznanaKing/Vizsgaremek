@@ -1,6 +1,22 @@
 [
   {
     "ContainingType": "Backend_PM_Project.Controllers.UserController",
+    "Method": "DeleteUserById",
+    "RelativePath": "UserTable/DeleteUserById",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "deleteUser",
+        "Type": "Backend_PM_Project.Models.DeleteUserByIdDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend_PM_Project.Controllers.UserController",
     "Method": "GetExistingUser",
     "RelativePath": "UserTable/GetExistingUser",
     "HttpMethod": "GET",
