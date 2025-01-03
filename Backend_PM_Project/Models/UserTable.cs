@@ -13,7 +13,7 @@ public partial class UserTable
     public string Userpassword { get; set; } = null!;
 
     public string Email { get; set; } = null!;
-    [JsonIgnore]
+    
     public virtual ICollection<PostTable> PostTables { get; set; } = new List<PostTable>();
     [JsonIgnore]
     public virtual ICollection<TrainerUserMessageConnector> TrainerUserMessageConnectors { get; set; } = new List<TrainerUserMessageConnector>();

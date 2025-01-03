@@ -11,7 +11,7 @@ public partial class PostTable
 
     public string? PostDescription { get; set; }
 
-    public byte[]? PostImage { get; set; }
+    public byte[] PostImage { get; set; }
 
     public Guid Userid { get; set; }
 

@@ -38,7 +38,7 @@ namespace Backend_PM_Project.Controllers
         [HttpGet("GetExistingUser")]
         public async Task<ActionResult> GetExistingUser()
         {
-            var users = await _Context.UserTables.ToListAsync();
+            var users = await _Context.UserTables.Include(x=>x.PostTables).ToListAsync();
             if (users != null)
             {
                 return Ok(users);

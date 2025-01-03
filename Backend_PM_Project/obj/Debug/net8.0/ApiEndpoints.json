@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "Backend_PM_Project.Controllers.PostController",
+    "Method": "NewPost",
+    "RelativePath": "PostTable/NewPost",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newPost",
+        "Type": "Backend_PM_Project.Models.NewPostDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Backend_PM_Project.Controllers.UserController",
     "Method": "DeleteUserById",
     "RelativePath": "UserTable/DeleteUserById",
