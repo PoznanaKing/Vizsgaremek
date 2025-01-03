@@ -45,6 +45,20 @@ namespace Backend_PM_Project.Controllers
             }
             return StatusCode(404, new { message = "Nincs felhasználó az adatbázisban!" });
         }
+        [HttpPut("ResetUserPassword")]
+        public async Task<ActionResult> ResetUserPassword(ResetPasswordDTO newPass)
+        {
+            var user = await _Context.UserTables.FirstOrDefaultAsync(x=>x.Id==newPass.userId);
+            if (user !=null)
+            {
+                user.Userpassword = newPass.userNewPassword;
+                _Context.UserTables.Update(user);
+                _Context.SaveChanges();
+                return StatusCode(200, new { message = "Sikeres jelszó változtatás!" });
+
+            }
+            return NotFound(new { message = "Sikertelen a jelszó váltás!" });
+        }
 
     }
 }

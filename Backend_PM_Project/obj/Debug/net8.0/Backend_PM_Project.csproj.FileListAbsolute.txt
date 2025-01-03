@@ -124,3 +124,4 @@ D:\ProjectGit\Backend_PM_Project\Backend_PM_Project\obj\Debug\net8.0\refint\Back
 D:\ProjectGit\Backend_PM_Project\Backend_PM_Project\obj\Debug\net8.0\Backend_PM_Project.pdb
 D:\ProjectGit\Backend_PM_Project\Backend_PM_Project\obj\Debug\net8.0\Backend_PM_Project.genruntimeconfig.cache
 D:\ProjectGit\Backend_PM_Project\Backend_PM_Project\obj\Debug\net8.0\ref\Backend_PM_Project.dll
+D:\ProjectGit\Backend_PM_Project\Backend_PM_Project\obj\Debug\net8.0\Backend_PM_Project.sourcelink.json

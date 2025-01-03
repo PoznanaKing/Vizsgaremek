@@ -24,5 +24,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend_PM_Project.Controllers.UserController",
+    "Method": "ResetUserPassword",
+    "RelativePath": "UserTable/ResetUserPassword",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newPass",
+        "Type": "Backend_PM_Project.Models.ResetPasswordDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
