@@ -7,4 +7,7 @@
 
     //postDTOs
     public record NewPostDTO(string postTitle, string postDesc, byte[] postImg, Guid userId);
+
+    //trainerDTOs
+    public record RegisterNewTrainer(string userName, string userPassword, string userEmail);
 }

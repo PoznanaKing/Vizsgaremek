@@ -16,6 +16,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Backend_PM_Project.Controllers.TrainerController",
+    "Method": "RegisterNewTrainer",
+    "RelativePath": "TrainerTable",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newtrainer",
+        "Type": "Backend_PM_Project.Models.RegisterNewTrainer",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend_PM_Project.Controllers.TrainerController",
+    "Method": "GetAllTrainer",
+    "RelativePath": "TrainerTable",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Backend_PM_Project.Controllers.UserController",
     "Method": "DeleteUserById",
     "RelativePath": "UserTable/DeleteUserById",
