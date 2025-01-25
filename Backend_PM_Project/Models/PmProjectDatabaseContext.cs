@@ -84,6 +84,9 @@ public partial class PmProjectDatabaseContext : DbContext
                 .HasMaxLength(40)
                 .IsFixedLength()
                 .HasColumnName("owner_password");
+            entity.Property(e => e.Verified)
+                .HasDefaultValueSql("'NULL'")
+                .HasColumnName("verified");
         });
 
         modelBuilder.Entity<PlaceTable>(entity =>
@@ -214,6 +217,9 @@ public partial class PmProjectDatabaseContext : DbContext
                 .HasMaxLength(40)
                 .IsFixedLength()
                 .HasColumnName("trainer_password");
+            entity.Property(e => e.Verified)
+                .HasDefaultValueSql("'NULL'")
+                .HasColumnName("verified");
         });
 
         modelBuilder.Entity<TrainerUserMessageConnector>(entity =>
@@ -260,6 +266,9 @@ public partial class PmProjectDatabaseContext : DbContext
                 .HasMaxLength(40)
                 .IsFixedLength()
                 .HasColumnName("userpassword");
+            entity.Property(e => e.Verified)
+                .HasDefaultValueSql("'NULL'")
+                .HasColumnName("verified");
         });
 
         OnModelCreatingPartial(modelBuilder);

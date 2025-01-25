@@ -25,6 +25,7 @@ namespace Backend_PM_Project.Controllers
                 Username = newUser.userName,
                 Userpassword = newUser.userPassword,
                 Email = newUser.userEmail,
+                Verified = false,
             };
             if (newuser != null)
             {
@@ -70,6 +71,16 @@ namespace Backend_PM_Project.Controllers
                 return StatusCode(200, new { message = "Sikeres törlés!" });
             }
             return NotFound(new { message = "Sikertelen törlés, mert a keresett azonosító alatt nincs ilyen felhasználó." });
+        }
+        [HttpGet("ById")]
+        public async Task<ActionResult> GetUserById(string id)
+        {
+            var selectedUser = await _Context.UserTables.FirstOrDefaultAsync(x=>x.Id.ToString() == id);
+            if (selectedUser != null)
+            {
+                return StatusCode(200, selectedUser);
+            }
+            return NotFound();
         }
 
     }

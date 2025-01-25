@@ -43,6 +43,22 @@
   },
   {
     "ContainingType": "Backend_PM_Project.Controllers.UserController",
+    "Method": "GetUserById",
+    "RelativePath": "UserTable/ById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend_PM_Project.Controllers.UserController",
     "Method": "DeleteUserById",
     "RelativePath": "UserTable/DeleteUserById",
     "HttpMethod": "DELETE",

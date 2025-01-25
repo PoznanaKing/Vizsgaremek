@@ -24,6 +24,7 @@ namespace Backend_PM_Project.Controllers
                 TrainerName=newtrainer.userName,
                 TrainerEmail=newtrainer.userEmail,
                 TrainerPassword=newtrainer.userPassword,
+                Verified = false,
             };
             if (newTrainer != null)
             {

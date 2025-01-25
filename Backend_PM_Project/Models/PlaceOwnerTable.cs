@@ -13,5 +13,7 @@ public partial class PlaceOwnerTable
 
     public string OwnerPassword { get; set; } = null!;
 
+    public bool? Verified { get; set; }
+
     public virtual ICollection<PlaceTable> PlaceTables { get; set; } = new List<PlaceTable>();
 }
