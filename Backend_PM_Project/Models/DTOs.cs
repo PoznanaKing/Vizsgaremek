@@ -10,4 +10,5 @@
 
     //trainerDTOs
     public record RegisterNewTrainer(string userName, string userPassword, string userEmail);
+    
 }

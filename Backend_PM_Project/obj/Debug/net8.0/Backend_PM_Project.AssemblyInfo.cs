@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Backend_PM_Project")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c1ce719b63110ad12cefabb571adecd6c8bd4b1d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9d5aa88647452d230088474e27e5f63c024689a7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Backend_PM_Project")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Backend_PM_Project")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

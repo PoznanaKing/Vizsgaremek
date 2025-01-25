@@ -45,5 +45,29 @@ namespace Backend_PM_Project.Controllers
             }
             return BadRequest();
         }
+        [HttpGet("ById")]
+        public async Task<ActionResult> GetUserById(string id)
+        {
+            var selectedUser = await _Context.TrainerTables.FirstOrDefaultAsync(x => x.TrainerId.ToString() == id);
+            if (selectedUser != null)
+            {
+                return StatusCode(200, selectedUser);
+            }
+            return NotFound();
+        }
+        [HttpPut("ResetTrainerPassword")]
+        public async Task<ActionResult> ResetUserPassword(ResetPasswordDTO newPass)
+        {
+            var trainer = await _Context.TrainerTables.FirstOrDefaultAsync(x => x.TrainerId == newPass.userId);
+            if (trainer != null)
+            {
+                trainer.TrainerPassword = newPass.userNewPassword;
+                _Context.TrainerTables.Update(trainer);
+                _Context.SaveChanges();
+                return StatusCode(200, new { message = "Sikeres jelszó változtatás!" });
+
+            }
+            return NotFound(new { message = "Sikertelen a jelszó váltás!" });
+        }
     }
 }
