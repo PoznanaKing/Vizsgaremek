@@ -1,0 +1,16 @@
+.footer {
+  background-color: #161515;
+  color: #2F4F4F;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: left;
+  font-size: 15px;
+  border-top: 3px solid darkslategray;
+}
+  
+.footer .contact-info {
+  margin-left: 20px;
+}
