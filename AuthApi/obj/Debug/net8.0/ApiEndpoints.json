@@ -1,0 +1,82 @@
+[
+  {
+    "ContainingType": "AuthApi.Controllers.PostController",
+    "Method": "GetPostById",
+    "RelativePath": "api/Post/ById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "getPostWithIdDTO",
+        "Type": "AuthApi.Models.Dtos.GetPostWithIdDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PostController",
+    "Method": "UploadPost",
+    "RelativePath": "api/Post/UploadPost",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uploadPostDTO",
+        "Type": "AuthApi.Models.Dtos.UploadPostDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "AssignRole",
+    "RelativePath": "auth/assignRole",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "assignRoleRequestDto",
+        "Type": "AuthApi.Models.Dtos.AssignRoleRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "LoginPost",
+    "RelativePath": "auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginRequestDto",
+        "Type": "AuthApi.Models.Dtos.LoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "RegisterPost",
+    "RelativePath": "auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "registerRequestDto",
+        "Type": "AuthApi.Models.Dtos.RegisterRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
