@@ -5,6 +5,7 @@ using AuthApi.Services.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static AuthApi.Models.Dtos.postDTOs;
 
 namespace AuthApi.Controllers
 {
@@ -21,7 +22,7 @@ namespace AuthApi.Controllers
             this.post = post;
         }
 
-        
+        [Authorize(Roles = "User,Trainer,PlaceOwner")]
         [HttpPost("UploadPost")]
         public async Task<ActionResult> UploadPost(UploadPostDTO uploadPostDTO)
         {
@@ -51,7 +52,18 @@ namespace AuthApi.Controllers
             }
             return NotFound(new {result = poster});
         }
+        [HttpDelete("DeletePost")]
+        public async Task<ActionResult> DeletePostById(DeletePostDTO postDTO)
+        {
+            var deletingPost = await post.deletePost(postDTO);
+            if (deletingPost != null)
+            {
+                _context.posts.Remove(deletingPost);
+                await _context.SaveChangesAsync();
+                return StatusCode(200, new { message = "Sikeres törlés." });
+            }
+            return NotFound(new {message="Sikertelen törlés."});
 
-
+        }
     }
 }

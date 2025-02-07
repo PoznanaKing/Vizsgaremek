@@ -31,7 +31,7 @@ namespace AuthApi.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("AspnetroleAspnetuser");
+                    b.ToTable("AspnetroleAspnetuser", (string)null);
                 });
 
             modelBuilder.Entity("AuthApi.Models.ApplicationUser", b =>
@@ -121,7 +121,7 @@ namespace AuthApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Aspnetrole");
+                    b.ToTable("Aspnetrole", (string)null);
                 });
 
             modelBuilder.Entity("AuthApi.Models.Aspnetroleclaim", b =>
@@ -144,7 +144,7 @@ namespace AuthApi.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Aspnetroleclaim");
+                    b.ToTable("Aspnetroleclaim", (string)null);
                 });
 
             modelBuilder.Entity("AuthApi.Models.Aspnetuser", b =>
@@ -203,7 +203,7 @@ namespace AuthApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Aspnetuser");
+                    b.ToTable("Aspnetuser", (string)null);
                 });
 
             modelBuilder.Entity("AuthApi.Models.Aspnetuserclaim", b =>
@@ -226,7 +226,7 @@ namespace AuthApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Aspnetuserclaim");
+                    b.ToTable("Aspnetuserclaim", (string)null);
                 });
 
             modelBuilder.Entity("AuthApi.Models.Aspnetuserlogin", b =>
@@ -246,7 +246,7 @@ namespace AuthApi.Migrations
 
                     b.HasKey("UserId", "LoginProvider");
 
-                    b.ToTable("Aspnetuserlogin");
+                    b.ToTable("Aspnetuserlogin", (string)null);
                 });
 
             modelBuilder.Entity("AuthApi.Models.Aspnetusertoken", b =>
@@ -265,7 +265,7 @@ namespace AuthApi.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("Aspnetusertoken");
+                    b.ToTable("Aspnetusertoken", (string)null);
                 });
 
             modelBuilder.Entity("AuthApi.Models.PostComment", b =>
@@ -289,7 +289,7 @@ namespace AuthApi.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostComment");
+                    b.ToTable("PostComment", (string)null);
                 });
 
             modelBuilder.Entity("AuthApi.Models.PostTable", b =>
@@ -316,7 +316,7 @@ namespace AuthApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("posts");
+                    b.ToTable("posts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

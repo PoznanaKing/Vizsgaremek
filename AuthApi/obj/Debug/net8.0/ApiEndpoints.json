@@ -9,7 +9,23 @@
     "Parameters": [
       {
         "Name": "getPostWithIdDTO",
-        "Type": "AuthApi.Models.Dtos.GetPostWithIdDTO",
+        "Type": "AuthApi.Models.Dtos.postDTOs\u002BGetPostWithIdDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PostController",
+    "Method": "DeletePostById",
+    "RelativePath": "api/Post/DeletePost",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "postDTO",
+        "Type": "AuthApi.Models.Dtos.postDTOs\u002BDeletePostDTO",
         "IsRequired": true
       }
     ],
@@ -25,7 +41,7 @@
     "Parameters": [
       {
         "Name": "uploadPostDTO",
-        "Type": "AuthApi.Models.Dtos.UploadPostDTO",
+        "Type": "AuthApi.Models.Dtos.postDTOs\u002BUploadPostDTO",
         "IsRequired": true
       }
     ],

@@ -29,6 +29,8 @@ namespace AuthApi.Models
             builder.Entity<Aspnetusertoken>()
             .HasKey(a => new { a.UserId, a.LoginProvider, a.Name });
             base.OnModelCreating(builder);
+            builder.Entity<PostTable>().ToTable("PostTable");
+            
         }
     }
 }

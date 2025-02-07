@@ -5,6 +5,7 @@ using AuthApi.Services.IService;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Threading.Tasks;
+using static AuthApi.Models.Dtos.postDTOs;
 
 namespace AuthApi.Services
 {
@@ -15,6 +16,16 @@ namespace AuthApi.Services
         public PostService(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
+        }
+
+        public async Task<PostTable> deletePost(DeletePostDTO deletePostDTO)
+        {
+            var deletingPost = await _appDbContext.posts.FirstOrDefaultAsync(x=>x.PostId==deletePostDTO.post_id);
+            if (deletingPost != null)
+            {
+                return deletingPost;
+            }
+            return null;
         }
 
         public async Task<object> getPostWithId(GetPostWithIdDTO getPostWithIdDTO)
