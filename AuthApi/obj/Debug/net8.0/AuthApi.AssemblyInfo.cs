@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuthApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5695f13102b1ffcb972063767abed609960ac342")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+024f47db1719bfc61f8cc8e13cdc33dc5c605510")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuthApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuthApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -31,7 +31,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
@@ -62,7 +62,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
@@ -93,43 +93,62 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
     },
-    "/api/Post/UploadPost": {
+    "/Posttable/UploadPost": {
       "post": {
         "tags": [
           "Post"
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UploadPostDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UploadPostDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UploadPostDTO"
+                "type": "object",
+                "properties": {
+                  "post_title": {
+                    "type": "string"
+                  },
+                  "post_image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "post_description": {
+                    "type": "string"
+                  },
+                  "user_id": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "post_title": {
+                  "style": "form"
+                },
+                "post_image": {
+                  "style": "form"
+                },
+                "post_description": {
+                  "style": "form"
+                },
+                "user_id": {
+                  "style": "form"
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
     },
-    "/api/Post/ById": {
+    "/Posttable/ById": {
       "get": {
         "tags": [
           "Post"
@@ -155,12 +174,12 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
     },
-    "/api/Post/DeletePost": {
+    "/Posttable/DeletePost": {
       "delete": {
         "tags": [
           "Post"
@@ -186,7 +205,38 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/postcomment/UploadComment": {
+      "post": {
+        "tags": [
+          "PostComment"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadComment"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadComment"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadComment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -264,25 +314,20 @@
         },
         "additionalProperties": false
       },
-      "UploadPostDTO": {
+      "UploadComment": {
         "type": "object",
         "properties": {
-          "post_title": {
+          "commenterName": {
             "type": "string",
             "nullable": true
           },
-          "post_image": {
-            "type": "string",
-            "format": "byte",
-            "nullable": true
-          },
-          "post_description": {
+          "commentContent": {
             "type": "string",
             "nullable": true
           },
-          "user_id": {
-            "type": "string",
-            "nullable": true
+          "postId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

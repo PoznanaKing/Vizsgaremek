@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace AuthApi.Models;
 
@@ -14,6 +15,6 @@ public partial class PostComment
     public string CommentContent { get; set; } = null!;
 
     public int PostId { get; set; }
-
+    [JsonIgnore]
     public virtual PostTable Post { get; set; } = null!;
 }

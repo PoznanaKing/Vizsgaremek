@@ -45,7 +45,7 @@ namespace AuthApi.Services
             {
                 using(var memoryStream = new MemoryStream())
                 {
-                    postDTO.post_image.CopyTo(memoryStream.ToArray(),postDTO.post_image.Length);
+                    postDTO.post_image.CopyTo(memoryStream);
                     postImageBytes = memoryStream.ToArray();
                 }
             }

@@ -9,7 +9,7 @@ using static AuthApi.Models.Dtos.postDTOs;
 
 namespace AuthApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Posttable")]
     [ApiController]
     public class PostController : ControllerBase
     {
@@ -22,25 +22,39 @@ namespace AuthApi.Controllers
             this.post = post;
         }
 
-        [Authorize(Roles = "User,Trainer,PlaceOwner")]
+        
         [HttpPost("UploadPost")]
-        public async Task<ActionResult> UploadPost(UploadPostDTO uploadPostDTO)
+        public async Task<ActionResult> UploadPost([FromForm] UploadPostDTO postDTO)
         {
-            var newPost = post.uploadPost(uploadPostDTO);
-            
-            if (newPost != null)
+            byte[] postImageBytes = null;
+            if (postDTO.post_image != null && postDTO.post_image.Length > 0)
             {
-                PostTable finalUpload = new PostTable();
-                finalUpload.PostTitle = uploadPostDTO.post_title;
-                finalUpload.PostDescription = uploadPostDTO.post_description;
-                finalUpload.UserId=uploadPostDTO.user_id;
-                finalUpload.PostImage = uploadPostDTO.post_image;
-                await _context.posts.AddAsync(finalUpload);
-                await _context.SaveChangesAsync();
-                return StatusCode(201, new { result = newPost, message = "Sikeres hozzáadás." });
+                using (var memoryStream = new MemoryStream())
+                {
+                    await postDTO.post_image.CopyToAsync(memoryStream);
+                    postImageBytes = memoryStream.ToArray();
+                }
+            }
+
+            var result = new PostTable
+            {
+                PostTitle = postDTO.post_title,
+                PostDescription = postDTO.post_description,
+                PostImage = postImageBytes,
+                UserId = postDTO.user_id,
+            };
+            await _context.AddAsync(result);
+            await _context.SaveChangesAsync();
+
+            if (result != null)
+            {
+                return StatusCode(201, new { result, message = "Sikeres hozzáadás." });
             }
             return BadRequest(new { result = "", message = "Sikertelen hozzáadás." });
         }
+
+
+
         [Authorize(Roles = "User,Trainer,PlaceOwner")]
         [HttpGet("ById")]
         public async Task<ActionResult> GetPostById(GetPostWithIdDTO getPostWithIdDTO)
