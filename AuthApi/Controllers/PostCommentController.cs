@@ -3,6 +3,7 @@ using AuthApi.Models.Dtos;
 using AuthApi.Services.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace AuthApi.Controllers
 {
@@ -31,6 +32,32 @@ namespace AuthApi.Controllers
 
             }
             return BadRequest(new { result = newComment, message = "Sikertelen feltöltés." });
+        }
+        [HttpDelete("DeleteComment")]
+        public async Task<ActionResult> DeleteCommentById(DeleteCommentDTO deleteCommentDTO)
+        {
+            var deletingComment = await comment.DeleteComment(deleteCommentDTO);
+            
+            if (deletingComment != null)
+            {
+                 _context.comments.Remove(deletingComment);
+                await _context.SaveChangesAsync();
+                return Ok(new {result=deletingComment, message="Sikeres törlés." });
+            }
+            return NotFound(new {result=deletingComment, message="Sikertelen törlés."});
+        }
+        [HttpPut("UpdatePost")]
+        public async Task<ActionResult> UpdateCommentById(UpdateCommentDTO updateCommentDTO)
+        {
+            var updatingComment= await comment.UpdateComment(updateCommentDTO);
+            if(updatingComment != null)
+            {
+                updatingComment.CommentContent=updateCommentDTO.CommentContent;
+                _context.comments.Update(updatingComment);
+                await _context.SaveChangesAsync();
+                return Ok(new {result=updatingComment,message="Sikeres módosítás."});
+            }
+            return NotFound(new { result = updatingComment, message = "Sikertelen módosítás." });
         }
     }
 }

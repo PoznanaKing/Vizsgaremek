@@ -49,6 +49,38 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.PostCommentController",
+    "Method": "DeleteCommentById",
+    "RelativePath": "postcomment/DeleteComment",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "deleteCommentDTO",
+        "Type": "AuthApi.Models.Dtos.DeleteCommentDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PostCommentController",
+    "Method": "UpdateCommentById",
+    "RelativePath": "postcomment/UpdatePost",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateCommentDTO",
+        "Type": "AuthApi.Models.Dtos.UpdateCommentDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PostCommentController",
     "Method": "UploadComment",
     "RelativePath": "postcomment/UploadComment",
     "HttpMethod": "POST",

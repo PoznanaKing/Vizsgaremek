@@ -59,7 +59,7 @@ namespace AuthApi.Controllers
         [HttpGet("ById")]
         public async Task<ActionResult> GetPostById(GetPostWithIdDTO getPostWithIdDTO)
         {
-            var poster = post.getPostWithId(getPostWithIdDTO);
+            var poster = await post.getPostWithId(getPostWithIdDTO);
             if (poster != null)
             {
                 return Ok(new {result = poster});
