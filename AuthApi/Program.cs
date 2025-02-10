@@ -13,6 +13,21 @@ namespace AuthApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+            {
+
+                options.AddPolicy(MyAllowSpecificOrigins,
+                                      policy =>
+                                      {
+                                          policy.WithOrigins("http://localhost:3000",
+                                                             "http://localhost:3000")
+                                                                .AllowAnyHeader()
+                                                                .AllowAnyMethod();
+                                      });
+            });
+
+
 
             builder.Services.AddDbContext<AppDbContext>();
             builder.Services.AddScoped<IPost, PostService>();
@@ -49,6 +64,9 @@ namespace AuthApi
             app.MapControllers();
 
             app.Run();
+
+
+            app.UseCors(MyAllowSpecificOrigins);
         }
         public void ConfigureServices(IServiceCollection services)
         {
@@ -59,6 +77,7 @@ namespace AuthApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Image Upload API", Version = "v1" });
 
+                // Swagger típus hozzáadása az IFormFile-hez
                 c.MapType<IFormFile>(() => new OpenApiSchema
                 {
                     Type = "string",

@@ -97,6 +97,37 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.PostController",
+    "Method": "UpdatePost",
+    "RelativePath": "Posttable/UpdatePost",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "post_title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "post_image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "post_description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "post_id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PostController",
     "Method": "UploadPost",
     "RelativePath": "Posttable/UploadPost",
     "HttpMethod": "POST",

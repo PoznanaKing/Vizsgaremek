@@ -79,5 +79,37 @@ namespace AuthApi.Controllers
             return NotFound(new {message="Sikertelen törlés."});
 
         }
+        [HttpPut("UpdatePost")]
+        public async Task<ActionResult> UpdatePost([FromForm] UpdatePostDTO updatePostDTO)
+        {
+            // Ellenőrizzük, hogy van-e feltöltött kép
+            byte[] postImageBytes = null;
+            if (updatePostDTO.post_image != null && updatePostDTO.post_image.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await updatePostDTO.post_image.CopyToAsync(memoryStream); // Aszinkron fájl másolás
+                    postImageBytes = memoryStream.ToArray();
+                }
+            }
+
+            // Frissítjük az adatbázisban lévő posztot
+            var updatePost = await post.updatePost(updatePostDTO);
+
+            if (updatePost != null)
+            {
+                // Ha van új kép, akkor frissítjük a poszt képét is
+                updatePost.PostTitle = updatePostDTO.post_title;
+                updatePost.PostDescription = updatePostDTO.post_description;
+                updatePost.PostImage = postImageBytes;
+
+                // Elmentjük az adatbázisba a frissítést
+                _context.posts.Update(updatePost);
+                await _context.SaveChangesAsync();
+
+                return StatusCode(201, new { result = updatePost, message = "Sikeres módosítás." });
+            }
+            return NotFound(new { result = updatePost, message = "Sikertelen módosítás." });
+        }
     }
 }

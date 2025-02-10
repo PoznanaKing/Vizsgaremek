@@ -210,6 +210,57 @@
         }
       }
     },
+    "/Posttable/UpdatePost": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "post_title": {
+                    "type": "string"
+                  },
+                  "post_image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "post_description": {
+                    "type": "string"
+                  },
+                  "post_id": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "post_title": {
+                  "style": "form"
+                },
+                "post_image": {
+                  "style": "form"
+                },
+                "post_description": {
+                  "style": "form"
+                },
+                "post_id": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/postcomment/UploadComment": {
       "post": {
         "tags": [

@@ -38,6 +38,41 @@ namespace AuthApi.Services
             return null;
         }
 
+        public async Task<PostTable> updatePost(UpdatePostDTO updatePostDTO)
+        {
+            byte[] postImageBytes = null;
+
+            // Ha van kép, konvertáld byte[]-ra
+            if (updatePostDTO.post_image != null && updatePostDTO.post_image.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await updatePostDTO.post_image.CopyToAsync(memoryStream); // Aszinkron fájl másolás
+                    postImageBytes = memoryStream.ToArray();
+                }
+            }
+
+            // Aszinkron módon lekérjük a posztot az adatbázisból
+            var updatePost = await _appDbContext.posts.FirstOrDefaultAsync(x => x.PostId == updatePostDTO.post_id);
+
+            if (updatePost != null)
+            {
+                // Frissítjük az adatokat az eredeti objektumban
+                updatePost.PostTitle = updatePostDTO.post_title;
+                updatePost.PostDescription = updatePostDTO.post_description;
+                updatePost.PostImage = postImageBytes;
+
+                // Elmentjük a változtatásokat az adatbázisba
+                await _appDbContext.SaveChangesAsync(); // Ez a változtatások mentéséért felelős
+
+                return updatePost; // Visszatérünk a frissített objektummal
+            }
+
+            return null;
+        }
+
+            
+
         public async Task<object> uploadPost(UploadPostDTO postDTO)
         {
             byte[] postImageBytes = null;
