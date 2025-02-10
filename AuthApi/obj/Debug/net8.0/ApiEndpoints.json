@@ -129,6 +129,16 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.PostController",
+    "Method": "GetAllPosts",
+    "RelativePath": "Posttable/GetAllPostsWithComments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PostController",
     "Method": "UpdatePost",
     "RelativePath": "Posttable/UpdatePost",
     "HttpMethod": "PUT",

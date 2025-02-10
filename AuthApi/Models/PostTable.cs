@@ -17,7 +17,7 @@ public partial class PostTable
     public string PostDescription { get; set; } = null!;
 
     public string? UserId { get; set; }
-    [JsonIgnore]
+    
     public virtual ICollection<PostComment> PostComments { get; set; } = new List<PostComment>();
 
     public virtual Aspnetuser? User { get; set; }

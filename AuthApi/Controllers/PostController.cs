@@ -5,6 +5,7 @@ using AuthApi.Services.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using static AuthApi.Models.Dtos.postDTOs;
 
 namespace AuthApi.Controllers
@@ -110,6 +111,18 @@ namespace AuthApi.Controllers
                 return StatusCode(201, new { result = updatePost, message = "Sikeres módosítás." });
             }
             return NotFound(new { result = updatePost, message = "Sikertelen módosítás." });
+        }
+        [HttpGet("GetAllPostsWithComments")]
+        public async Task<ActionResult> GetAllPosts()
+        {
+            var datas = await _context.posts.Include(x=>x.PostComments).ToListAsync();
+
+            if (datas != null && datas.Any())
+            {
+                return Ok(datas);
+            }
+
+            return NotFound(new { message = "Nincs semmi az adatbázisban." });
         }
     }
 }
