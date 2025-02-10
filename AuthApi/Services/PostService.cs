@@ -30,7 +30,7 @@ namespace AuthApi.Services
 
         public async Task<object> getPostWithId(GetPostWithIdDTO getPostWithIdDTO)
         {
-            var result = await _appDbContext.posts.FirstOrDefaultAsync(x=>x.PostId==getPostWithIdDTO.post_id);
+            var result = await _appDbContext.posts.Include(x=>x.PostComments).FirstOrDefaultAsync(x=>x.PostId==getPostWithIdDTO.post_id);
             if (result!=null)
             {
                 return result;
