@@ -13,6 +13,7 @@ namespace AuthApi.Models
         public DbSet<ApplicationUser> applicationUsers { get; set; } = null!;
         public DbSet<PostTable> posts { get; set; } = null!;
         public DbSet<PostComment> comments { get; set; }
+        public DbSet<PlaceTable> places { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

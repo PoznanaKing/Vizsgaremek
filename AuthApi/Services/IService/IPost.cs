@@ -11,5 +11,6 @@ namespace AuthApi.Services.IService
         Task<object> getPostWithId(GetPostWithIdDTO getPostWithIdDTO);
         Task<PostTable> deletePost(DeletePostDTO deletePostDTO);
         Task<PostTable> updatePost(UpdatePostDTO updatePostDTO);
+        
     }
 }

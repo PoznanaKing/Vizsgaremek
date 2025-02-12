@@ -48,6 +48,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AuthApi.Controllers.PlaceController",
+    "Method": "UploadPlace",
+    "RelativePath": "PlaceTable/UploadPlace",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uploadPlaceDTO",
+        "Type": "AuthApi.Models.Dtos.UploadPlaceDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AuthApi.Controllers.PostCommentController",
     "Method": "DeleteCommentById",
     "RelativePath": "postcomment/DeleteComment",

@@ -98,6 +98,37 @@
         }
       }
     },
+    "/PlaceTable/UploadPlace": {
+      "post": {
+        "tags": [
+          "Place"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadPlaceDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadPlaceDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadPlaceDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/Posttable/UploadPost": {
       "post": {
         "tags": [
@@ -477,6 +508,40 @@
           "postId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UploadPlaceDTO": {
+        "type": "object",
+        "properties": {
+          "placename": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalcode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "townname": {
+            "type": "string",
+            "nullable": true
+          },
+          "streetname": {
+            "type": "string",
+            "nullable": true
+          },
+          "storylevel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

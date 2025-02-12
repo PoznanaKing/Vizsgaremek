@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\GitWorkRepos\\Back-end\\AuthApi\\AuthApi.csproj": {}
+    "C:\\gitworkdir\\backend\\AuthApi\\AuthApi.csproj": {}
   },
   "projects": {
-    "C:\\GitWorkRepos\\Back-end\\AuthApi\\AuthApi.csproj": {
+    "C:\\gitworkdir\\backend\\AuthApi\\AuthApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\GitWorkRepos\\Back-end\\AuthApi\\AuthApi.csproj",
+        "projectUniqueName": "C:\\gitworkdir\\backend\\AuthApi\\AuthApi.csproj",
         "projectName": "AuthApi",
-        "projectPath": "C:\\GitWorkRepos\\Back-end\\AuthApi\\AuthApi.csproj",
+        "projectPath": "C:\\gitworkdir\\backend\\AuthApi\\AuthApi.csproj",
         "packagesPath": "C:\\Users\\Tanulo\\.nuget\\packages\\",
-        "outputPath": "C:\\GitWorkRepos\\Back-end\\AuthApi\\obj\\",
+        "outputPath": "C:\\gitworkdir\\backend\\AuthApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -101,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

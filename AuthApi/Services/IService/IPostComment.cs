@@ -8,5 +8,6 @@ namespace AuthApi.Services.IService
         Task<PostComment> UploadComment(UploadComment uploadComment);
         Task<PostComment> DeleteComment(DeleteCommentDTO deleteCommentDTO);
         Task<PostComment> UpdateComment(UpdateCommentDTO updateCommentDTO);
+        
     }
 }
