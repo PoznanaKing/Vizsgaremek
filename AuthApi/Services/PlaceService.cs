@@ -14,6 +14,18 @@ namespace AuthApi.Services
             _appDbContext = appDbContext;
         }
 
+        public async Task<PlaceTable> DeletePlace(DeletePlaceDTO deletePlaceDTO)
+        {
+            var place = await _appDbContext.places.FindAsync(deletePlaceDTO.placeid);
+            if (place != null)
+            {
+                _appDbContext.places.Remove(place);
+                await _appDbContext.SaveChangesAsync();
+                return place;
+            }
+            return null;
+        }
+
         public async Task<PlaceTable> EditPlace(EditPlaceDTO editPlaceDTO)
         {
             var editingPlace = await _appDbContext.places.FirstOrDefaultAsync(x=>x.PlaceId==editPlaceDTO.placeid);

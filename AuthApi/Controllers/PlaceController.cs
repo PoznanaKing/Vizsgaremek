@@ -58,5 +58,24 @@ namespace AuthApi.Controllers
 
             return Ok(new { result = existingPlace, message = "Sikeres módosítás." });
         }
+        [HttpDelete("DeletePost")]
+        public async Task<ActionResult> DeletePlace(DeletePlaceDTO deletePlaceDTO)
+        {
+
+            if (deletePlaceDTO == null)
+            {
+                return BadRequest(new { message = "Érvénytelen adatok." });
+            }
+            
+            var deletingPlace = await place.DeletePlace(deletePlaceDTO);
+            if (deletingPlace != null)
+            {
+                _context.places.Remove(deletingPlace);
+                await _context.SaveChangesAsync();
+                return Ok(new { result = deletingPlace, message = "Sikeres törlés." });
+            }
+
+            return NotFound(new { message = "A hely nem található." });
+        }
     }
 }
