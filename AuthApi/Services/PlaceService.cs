@@ -1,6 +1,7 @@
 ﻿using AuthApi.Models;
 using AuthApi.Models.Dtos;
 using AuthApi.Services.IService;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthApi.Services
 {
@@ -12,6 +13,17 @@ namespace AuthApi.Services
         {
             _appDbContext = appDbContext;
         }
+
+        public async Task<PlaceTable> EditPlace(EditPlaceDTO editPlaceDTO)
+        {
+            var editingPlace = await _appDbContext.places.FirstOrDefaultAsync(x=>x.PlaceId==editPlaceDTO.placeid);
+            if (editingPlace != null)
+            {
+                return editingPlace;
+            }
+            return null;
+        }
+
         public Task<PlaceTable> UploadPlace(UploadPlaceDTO uploadPlaceDTO)
         {
             var newPlace = new PlaceTable

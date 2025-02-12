@@ -7,7 +7,7 @@ namespace AuthApi.Models;
 public partial class PlaceTable
 {
     [Key]
-    public Guid PlaceId { get; set; }
+    public int PlaceId { get; set; }
 
     public string PlaceName { get; set; } = null!;
 

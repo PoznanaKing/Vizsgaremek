@@ -33,5 +33,30 @@ namespace AuthApi.Controllers
 
             return BadRequest("Hiba történt a hely feltöltése során."); // Hibakezelés
         }
+        [HttpPut("EditPlaceData")]
+        public async Task<ActionResult> EditPlaceData(EditPlaceDTO editPlaceDTO)
+        {
+            // Lekérdezzük a meglévő entitást az adatbázisból
+            var existingPlace = await _context.places.FindAsync(editPlaceDTO.placeid);
+            if (existingPlace == null)
+            {
+                return NotFound(new { message = "A hely nem található." });
+            }
+
+            // Frissítjük a meglévő entitás tulajdonságait
+            existingPlace.PlaceName = editPlaceDTO.placename;
+            existingPlace.Description = editPlaceDTO.description;
+            existingPlace.PostalCode = editPlaceDTO.postalcode;
+            existingPlace.Rating = editPlaceDTO.rating;
+            existingPlace.StoryLevel = editPlaceDTO.storylevel;
+            existingPlace.StreetName = editPlaceDTO.streetname;
+            existingPlace.TownName = editPlaceDTO.townname;
+
+            // Mentjük a változtatásokat
+            _context.places.Update(existingPlace);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { result = existingPlace, message = "Sikeres módosítás." });
+        }
     }
 }

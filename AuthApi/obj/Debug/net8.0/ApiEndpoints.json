@@ -49,6 +49,22 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.PlaceController",
+    "Method": "EditPlaceData",
+    "RelativePath": "PlaceTable/EditPlaceData",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "editPlaceDTO",
+        "Type": "AuthApi.Models.Dtos.EditPlaceDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "UploadPlace",
     "RelativePath": "PlaceTable/UploadPlace",
     "HttpMethod": "POST",
