@@ -88,5 +88,15 @@ namespace AuthApi.Controllers
             }
             return NotFound(new {message="Nincs a rendszerben még edzőterem."});
         }
+        [HttpPost("getplacebyid")]
+        public async Task<ActionResult> GetPlaceById(GetPlaceById getPlaceById)
+        {
+            var placeById = await place.GetPlaceById(getPlaceById);
+            if (placeById != null)
+            {
+                return Ok(new { result = placeById });
+            }
+            return NotFound(new { result = placeById, message = "Az adott id-val nem található edzőterem." });
+        }
     }
 }

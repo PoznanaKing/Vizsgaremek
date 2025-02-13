@@ -91,6 +91,22 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.PlaceController",
+    "Method": "GetPlaceById",
+    "RelativePath": "PlaceTable/getplacebyid",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "getPlaceById",
+        "Type": "AuthApi.Models.Dtos.GetPlaceById",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "UploadPlace",
     "RelativePath": "PlaceTable/UploadPlace",
     "HttpMethod": "POST",

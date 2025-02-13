@@ -203,6 +203,37 @@
         }
       }
     },
+    "/PlaceTable/getplacebyid": {
+      "post": {
+        "tags": [
+          "Place"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPlaceById"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPlaceById"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPlaceById"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/Posttable/UploadPost": {
       "post": {
         "tags": [
@@ -549,6 +580,16 @@
             "type": "number",
             "format": "double"
           },
+          "placeid": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlaceById": {
+        "type": "object",
+        "properties": {
           "placeid": {
             "type": "integer",
             "format": "int32"

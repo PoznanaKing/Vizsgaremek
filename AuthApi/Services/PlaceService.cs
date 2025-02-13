@@ -36,14 +36,16 @@ namespace AuthApi.Services
             return null;
         }
 
-        public async Task<object> GetAllPlaces()
+        public async Task<PlaceTable> GetPlaceById(GetPlaceById getPlaceById)
         {
-            var allPlaces = _appDbContext.places.ToListAsync();
-            if (allPlaces!=null)
-            {
-                return allPlaces;
+            var placeById = await _appDbContext.places.FirstOrDefaultAsync(x => x.PlaceId == getPlaceById.placeid);
+            if (placeById != null) {
+                return placeById;
             }
             return null;
+                
+                
+                
         }
 
         public Task<PlaceTable> UploadPlace(UploadPlaceDTO uploadPlaceDTO)

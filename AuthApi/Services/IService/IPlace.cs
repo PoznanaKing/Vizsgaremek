@@ -8,6 +8,6 @@ namespace AuthApi.Services.IService
         public Task<PlaceTable> UploadPlace(UploadPlaceDTO uploadPlaceDTO);
         public Task<PlaceTable> EditPlace(EditPlaceDTO editPlaceDTO);
         public Task<PlaceTable> DeletePlace(DeletePlaceDTO deletePlaceDTO);
-        public Task<object> GetAllPlaces();
+        public Task<PlaceTable> GetPlaceById(GetPlaceById getPlaceById);
     }
 }
