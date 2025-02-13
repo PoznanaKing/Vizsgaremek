@@ -81,6 +81,16 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.PlaceController",
+    "Method": "GetAllPlaces",
+    "RelativePath": "PlaceTable/GetAllPlaces",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "UploadPlace",
     "RelativePath": "PlaceTable/UploadPlace",
     "HttpMethod": "POST",

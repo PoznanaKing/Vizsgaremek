@@ -3,6 +3,7 @@ using AuthApi.Models.Dtos;
 using AuthApi.Services.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthApi.Controllers
 {
@@ -76,6 +77,16 @@ namespace AuthApi.Controllers
             }
 
             return NotFound(new { message = "A hely nem található." });
+        }
+        [HttpGet("GetAllPlaces")]
+        public async Task<ActionResult> GetAllPlaces()
+        {
+            var allPlaces = await _context.places.ToListAsync();
+            if (allPlaces != null)
+            {
+                return Ok(allPlaces);
+            }
+            return NotFound(new {message="Nincs a rendszerben még edzőterem."});
         }
     }
 }

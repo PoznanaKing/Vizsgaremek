@@ -191,6 +191,18 @@
         }
       }
     },
+    "/PlaceTable/GetAllPlaces": {
+      "get": {
+        "tags": [
+          "Place"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/Posttable/UploadPost": {
       "post": {
         "tags": [
