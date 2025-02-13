@@ -20,8 +20,8 @@ namespace AuthApi
                 options.AddPolicy(MyAllowSpecificOrigins,
                                       policy =>
                                       {
-                                          policy.WithOrigins("http://localhost:3000",
-                                                             "http://localhost:3000")
+                                          policy.WithOrigins("http://localhost:3000"
+                                                             )
                                                                 .AllowAnyHeader()
                                                                 .AllowAnyMethod();
                                       });
@@ -59,7 +59,7 @@ namespace AuthApi
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthorization();
 
             app.MapControllers();
@@ -67,7 +67,7 @@ namespace AuthApi
             app.Run();
 
 
-            app.UseCors(MyAllowSpecificOrigins);
+            
         }
         public void ConfigureServices(IServiceCollection services)
         {
