@@ -17,6 +17,6 @@ export default function ListGym() {
 
 
   return (
-    <div>ListGym</div>
+    <div></div>
   )
 }

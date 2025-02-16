@@ -5,62 +5,34 @@ import Header from './Header';
 import Footer from './Footer';
 import Card from './Card';
 import Navbar from './Navbar';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';   
- 
+import {Route, Routes,Link } from 'react-router-dom';   
+import Login from './Login';
+import Register from './Register';
+
+
 function App() {
- const [showCards, setShowCards] = useState(false);
-
-
-  const handleScroll = () => {
-    if (window.scrollY > 50) {
-      setShowCards(true);
-    }
-  };
-
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-
-  const handleArrowClick = () => {
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' }); // Scroll down the page smoothly
-  };
-
-
+ 
   return (
     <div className="App">
       <Header />
       <Navbar />
-      
       {}
-      <div className={`main-content ${showCards ? 'show-cards' : ''}`}>
-        <div className="header-content">
-          <h1>PM Project</h1>
-          <div className="arrow" onClick={handleArrowClick}>
-            &#8595; {}
-          </div>
-        </div>
+          
+      <Routes>
+        <Route path='Register' element={<Register/>}/>
+        <Route path='Login' element={<Login/>}/>
+      </Routes>
+      <div className="auth-buttons">
+      <Link to="/Login">
+         <button>Login</button>
+      </Link>
+
+      <Link to="/Register">
+         <button>Register</button>
+      </Link>
       </div>
-
-      {}
-      {showCards && (
-        <div className="cards-container">
-          {}
-          <div className="card">Card 1</div>
-          <div className="card">Card 2</div>
-          <div className="card">Card 3</div>
-        </div>
-      )}
       
-
-
-
-
-
+    
 
 
 
