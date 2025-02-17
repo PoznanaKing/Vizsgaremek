@@ -17,6 +17,27 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "EmailVerify",
+    "RelativePath": "auth/EmailVerification",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "inputCode",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.AuthController",
     "Method": "LoginPost",
     "RelativePath": "auth/login",
     "HttpMethod": "POST",

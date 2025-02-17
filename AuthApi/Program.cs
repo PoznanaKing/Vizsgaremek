@@ -36,6 +36,7 @@ namespace AuthApi
             builder.Services.AddScoped<IPostComment, PostCommentService>();
             builder.Services.AddScoped<ITokenGenerator, TokenGenarator>();
             builder.Services.AddScoped<IPlace, PlaceService>();
+            builder.Services.AddMemoryCache();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>()
               .AddDefaultTokenProviders();

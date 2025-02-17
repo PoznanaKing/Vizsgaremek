@@ -41,6 +41,15 @@ namespace AuthApi.Services
             return new { result = "", message = "Sikertelen hozzárendelés." };
         }
 
+        public async Task<bool> EmailVerification(int inputCode, string userid,int code)
+        {
+            if (inputCode == code)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<object> Login(LoginRequestDto loginRequestDto)
         {
             var user = await _appDbContext.applicationUsers.

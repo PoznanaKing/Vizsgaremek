@@ -18,7 +18,7 @@ namespace AuthApi.Services
             _configuration = configuration;
         }
 
-        public void SendMail(EmailDTO emailDTO)
+        public void SendMail(EmailDTO emailDTO,int code)
         {
             
             var email = new MimeMessage();
@@ -26,7 +26,7 @@ namespace AuthApi.Services
             email.To.Add(MailboxAddress.Parse(emailDTO.To));
             email.Subject = "Regisztráció";
             
-            email.Body = new TextPart(TextFormat.Html) { Text = "<h1 style=\"font-family: 'Brush Script MT', cursive; font-size: 40px; color: #ff1493; text-align: center; padding: 40px; background-color: #8a2be2; border-radius: 30px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4); transform: scale(1.2); transition: transform 0.3s ease; border: 5px solid #ffd700; border-radius: 50px; background-image: url('https://img.icons8.com/ios/50/ffffff/sparkles.png'); background-size: 30px 30px; background-repeat: no-repeat; background-position: center center;\">\r\n  ✨ Köszönjük a regisztrációt a PM project-nél! ✨\r\n</h1>\r\n" };
+            email.Body = new TextPart(TextFormat.Html) { Text =$"<p style=\"font-family: Arial, sans-serif; font-size: 16px; color: #333; margin: 0; padding: 10px; background-color: #f9f9f9; border-radius: 5px; display: inline-block;\">Az aktiváló kódja: <span style=\"font-weight: bold; color: #007BFF;\">{code}</span></p>" };
 
             using var smtp = new SmtpClient();
             smtp.Connect(_configuration.GetSection("EmailSettings:EmailHost").Value, 587, SecureSocketOptions.StartTls);

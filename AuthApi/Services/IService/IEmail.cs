@@ -6,6 +6,6 @@ namespace emailApi.Services.IServices
 {
     public interface IEmail
     {
-        void SendMail(EmailDTO emailDTO);
+        void SendMail(EmailDTO emailDTO, int code);
     }
 }
