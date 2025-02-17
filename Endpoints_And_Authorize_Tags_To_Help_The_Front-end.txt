@@ -1,0 +1,38 @@
+role names:
+-Admin (This needed to be fully private. please only upload from the swagger with this role!)
+-User
+-Trainer
+-PlaceOwner
+
+Endpoint Links:
+
+[AUTHORIZE]
+login : https://localhost:7285/auth/login
+register : https://localhost:7285/auth/register
+assign roles : https://localhost:7285/auth/assignRole
+email verification : https://localhost:7285/auth/EmailVerification
+
+[PLACE]
+upload place : https://localhost:7285/PlaceTable/UploadPlace
+edit place : https://localhost:7285/PlaceTable/EditPlaceData
+delete place by id : https://localhost:7285/PlaceTable/DeletePost
+get all places: https://localhost:7285/PlaceTable/GetAllPlaces
+get place by id : https://localhost:7285/PlaceTable/getplacebyid
+
+[POST]
+upload post : https://localhost:7285/Posttable/UploadPost
+get post by id : https://localhost:7285/Posttable/ById
+delete post by id: https://localhost:7285/Posttable/DeletePost
+edit post : https://localhost:7285/Posttable/UpdatePost
+get all posts with comments : https://localhost:7285/Posttable/GetAllPostsWithComments
+
+[COMMENTS]
+upload comment : https://localhost:7285/postcomment/UploadComment
+delete comment by id : https://localhost:7285/postcomment/DeleteComment
+edit comment : https://localhost:7285/postcomment/UpdatePost
+
+necceceary informations:
+-you need to be able to login to use any of the endpoints.
+-you need to know your password need to contains uppercase and lowercase, number and lastly special characters to be able to register.
+-the password only get a hashing.
+-to verify the email you need to make a separated http/axios request.
