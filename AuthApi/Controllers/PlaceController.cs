@@ -1,6 +1,7 @@
 ﻿using AuthApi.Models;
 using AuthApi.Models.Dtos;
 using AuthApi.Services.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace AuthApi.Controllers
             _context = context;
             this.place = place;
         }
-
+        [Authorize(Roles ="Admin,PlaceOwner")]
         [HttpPost("UploadPlace")]
         public async Task<ActionResult> UploadPlace(UploadPlaceDTO uploadPlaceDTO)
         {
@@ -34,6 +35,7 @@ namespace AuthApi.Controllers
 
             return BadRequest("Hiba történt a hely feltöltése során."); // Hibakezelés
         }
+        [Authorize(Roles = "Admin,PlaceOwner")]
         [HttpPut("EditPlaceData")]
         public async Task<ActionResult> EditPlaceData(EditPlaceDTO editPlaceDTO)
         {
@@ -59,6 +61,7 @@ namespace AuthApi.Controllers
 
             return Ok(new { result = existingPlace, message = "Sikeres módosítás." });
         }
+        [Authorize(Roles = "Admin,PlaceOwner")]
         [HttpDelete("DeletePost")]
         public async Task<ActionResult> DeletePlace(DeletePlaceDTO deletePlaceDTO)
         {
@@ -78,6 +81,7 @@ namespace AuthApi.Controllers
 
             return NotFound(new { message = "A hely nem található." });
         }
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpGet("GetAllPlaces")]
         public async Task<ActionResult> GetAllPlaces()
         {
@@ -88,6 +92,7 @@ namespace AuthApi.Controllers
             }
             return NotFound(new {message="Nincs a rendszerben még edzőterem."});
         }
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpPost("getplacebyid")]
         public async Task<ActionResult> GetPlaceById(GetPlaceById getPlaceById)
         {

@@ -23,7 +23,7 @@ namespace AuthApi.Controllers
             this.post = post;
         }
 
-        
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpPost("UploadPost")]
         public async Task<ActionResult> UploadPost([FromForm] UploadPostDTO postDTO)
         {
@@ -56,7 +56,7 @@ namespace AuthApi.Controllers
 
 
 
-        [Authorize(Roles = "User,Trainer,PlaceOwner")]
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpGet("ById")]
         public async Task<ActionResult> GetPostById(GetPostWithIdDTO getPostWithIdDTO)
         {
@@ -67,6 +67,7 @@ namespace AuthApi.Controllers
             }
             return NotFound(new {result = poster});
         }
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpDelete("DeletePost")]
         public async Task<ActionResult> DeletePostById(DeletePostDTO postDTO)
         {
@@ -80,6 +81,7 @@ namespace AuthApi.Controllers
             return NotFound(new {message="Sikertelen törlés."});
 
         }
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpPut("UpdatePost")]
         public async Task<ActionResult> UpdatePost([FromForm] UpdatePostDTO updatePostDTO)
         {
@@ -112,6 +114,7 @@ namespace AuthApi.Controllers
             }
             return NotFound(new { result = updatePost, message = "Sikertelen módosítás." });
         }
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpGet("GetAllPostsWithComments")]
         public async Task<ActionResult> GetAllPosts()
         {

@@ -1,6 +1,7 @@
 ﻿using AuthApi.Models;
 using AuthApi.Models.Dtos;
 using AuthApi.Services.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -19,7 +20,7 @@ namespace AuthApi.Controllers
             _context = context;
             this.comment = Comment;
         }
-
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpPost("UploadComment")]
         public async Task<ActionResult> UploadComment(UploadComment uploadComment)
         {
@@ -33,6 +34,7 @@ namespace AuthApi.Controllers
             }
             return BadRequest(new { result = newComment, message = "Sikertelen feltöltés." });
         }
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpDelete("DeleteComment")]
         public async Task<ActionResult> DeleteCommentById(DeleteCommentDTO deleteCommentDTO)
         {
@@ -46,6 +48,7 @@ namespace AuthApi.Controllers
             }
             return NotFound(new {result=deletingComment, message="Sikertelen törlés."});
         }
+        [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpPut("UpdatePost")]
         public async Task<ActionResult> UpdateCommentById(UpdateCommentDTO updateCommentDTO)
         {
