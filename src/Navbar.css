@@ -1,60 +1,59 @@
 .navbar {
-    height: 100vh;
-    width: 250px;
-    top: 90px;
-    left: -250px;
-    background-color: #333;
-    color: #2F4F4F;
-    overflow-x: hidden;
-    transition: 0.3s;
-    padding-top: 60px;
+  height: 100vh;
+  width: 250px;
+  left: -250px;
+  background-color: #333;
+  color: #2F4F4F;
+  transition: 0.3s;
+  padding-top: 60px;
+  overflow:hidden;
 
-  }
+}
   
-  .navbar a {
-    padding: 15px 25px;
-    text-decoration: none;
-    font-size: 22px;
-    color: white;
-
-    transition: 0.3s;
-  }
+.navbar a {
+  padding: 15px 25px;
+  text-decoration: none;
+  font-size: 22px;
+  color: white;
+  transition: 0.3s;
+}
   
-  .navbar a:hover {
-    background-color: #575757;
-  }
+.navbar a:hover {
+  background-color: #575757;
+}
   
-  .openbtn {
-    font-size: 30px;
-    cursor: pointer;
-    background-color: #161515;
-    color: white;
-    border: none;
-    position: fixed;
-    top: 5px;
-    left: 15px;
-    padding: 10px 15px;
-    transition: 0.3s;
-  }
+.openbtn {
+  font-size: 30px;
+  cursor: pointer;
+  background-color: #161515;
+  color: white;
+  border: none;
+  position: fixed;
+  top: 5px;
+  left: 15px;
+  padding: 10px 15px;
+  transition: 0.3s;
+}
   
-  .openbtn:hover {
-    background-color: #444;
-  }
+.openbtn:hover {
+  background-color: #444;
+}
   
-  .closebtn {
-    font-size: 36px;
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-weight: bold;
-    color: #2F4F4F;
-    cursor: pointer;
-  }
+.closebtn {
+  font-size: 36px;
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-weight: bold;
+  color: #2F4F4F;
+  cursor: pointer;
+}
   
-  .closebtn:hover {
-    color: white;
-  }
+.closebtn:hover {
+  color: white;
+}
   
-  .navbar.open {
-    left: 0;
-  }
+.navbar.open {
+  left: 0;
+  overflow: hidden;
+}
