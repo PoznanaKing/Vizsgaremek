@@ -314,7 +314,7 @@
       }
     },
     "/Posttable/ById": {
-      "get": {
+      "post": {
         "tags": [
           "Post"
         ],
@@ -345,7 +345,7 @@
       }
     },
     "/Posttable/DeletePost": {
-      "delete": {
+      "post": {
         "tags": [
           "Post"
         ],

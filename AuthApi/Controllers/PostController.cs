@@ -57,19 +57,19 @@ namespace AuthApi.Controllers
 
 
         [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
-        [HttpGet("ById")]
-        public async Task<ActionResult> GetPostById(GetPostWithIdDTO getPostWithIdDTO)
+        [HttpPost("ById")]
+        public async Task<ActionResult> GetPostById([FromBody] GetPostWithIdDTO getPostWithIdDTO)
         {
             var poster = await post.getPostWithId(getPostWithIdDTO);
             if (poster != null)
             {
-                return Ok(new {result = poster});
+                return Ok(new { result = poster });
             }
-            return NotFound(new {result = poster});
+            return NotFound(new { result = poster });
         }
         [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
-        [HttpDelete("DeletePost")]
-        public async Task<ActionResult> DeletePostById(DeletePostDTO postDTO)
+        [HttpPost("DeletePost")]  // Changed to POST because we're sending a body
+        public async Task<ActionResult> DeletePostById([FromBody] DeletePostDTO postDTO)
         {
             var deletingPost = await post.deletePost(postDTO);
             if (deletingPost != null)
@@ -78,9 +78,9 @@ namespace AuthApi.Controllers
                 await _context.SaveChangesAsync();
                 return StatusCode(200, new { message = "Sikeres törlés." });
             }
-            return NotFound(new {message="Sikertelen törlés."});
-
+            return NotFound(new { message = "Sikertelen törlés." });
         }
+
         [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]
         [HttpPut("UpdatePost")]
         public async Task<ActionResult> UpdatePost([FromForm] UpdatePostDTO updatePostDTO)
