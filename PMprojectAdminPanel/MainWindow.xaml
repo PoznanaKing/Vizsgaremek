@@ -5,10 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PMprojectAdminPanel"
         mc:Ignorable="d"
-        Title="Admin Panel" Height="600" Width="800">
+        Title="Admin Panel" Height="600" Width="800"
+        Background="#2E2E2E" Foreground="White">
+
+    <Window.Resources>
+        <!-- Gomb stílus -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#4A4A4A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <!-- Szövegdoboz stílus -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#4A4A4A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <!-- Jelszómező stílus -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="Background" Value="#4A4A4A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <!-- Szövegblokk stílus -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <!-- Lista stílus -->
+        <Style TargetType="ListView">
+            <Setter Property="Background" Value="#4A4A4A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        <!-- Login Panel -->
-        <Grid x:Name="mainGrid" Margin="20">
+        <!-- Bejelentkezési panel -->
+        <Grid x:Name="mainGrid" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -20,43 +69,35 @@
 
             <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0 0 0 10">
                 <TextBlock Text="Felhasználónév" Margin="0 0 0 5"/>
-                <TextBox x:Name="txtUsername" Width="200" HorizontalAlignment="Left"/>
+                <TextBox x:Name="txtUsername" Width="200"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0 0 0 20">
                 <TextBlock Text="Jelszó" Margin="0 0 0 5"/>
-                <PasswordBox x:Name="txtPassword" Width="200" HorizontalAlignment="Left"/>
+                <PasswordBox x:Name="txtPassword" Width="200"/>
             </StackPanel>
 
             <Button Grid.Row="3" x:Name="btnLogin" Content="Bejelentkezés" Width="100" 
-                    Click="btnLogin_Click" HorizontalAlignment="Left"/>
+                    Click="btnLogin_Click"/>
         </Grid>
 
-        <!-- Admin Panel -->
-        <StackPanel x:Name="topPanel" Visibility="Collapsed">
-            <DockPanel Background="#EEE" Margin="0 0 0 10">
+        <!-- Admin panel -->
+        <StackPanel x:Name="topPanel" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <DockPanel Background="#3E3E3E" Margin="0 0 0 10">
                 <TextBlock x:Name="txtAdminName" Margin="10" FontWeight="Bold"/>
                 <Button x:Name="btnLogout" Content="Kijelentkezés" DockPanel.Dock="Right" 
                         Margin="10" Click="btnLogout_Click"/>
             </DockPanel>
 
-            <ListView x:Name="postsListView" Margin="10">
+            <ListView x:Name="postsListView">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="10">
-                            <TextBlock Text="{Binding PostTitle}" FontWeight="Bold" FontSize="14"/>
-                            <TextBlock Text="{Binding PostDescription}" Margin="0 5 0 10"/>
-                            <TextBlock Text="Hozzászólások:" FontWeight="Bold"/>
-                            <ListView ItemsSource="{Binding PostComments}" Margin="10 5 0 0">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="{Binding UserName}" FontWeight="Bold"/>
-                                            <TextBlock Text="{Binding CommentText}" Margin="5 0 0 0"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                        <StackPanel>
+                            <TextBlock Text="{Binding PostTitle}"/>
+                            <Button Content="Törlés" 
+                        Click="DeletePost_Click"
+                        Tag="{Binding}"/>
+                            <!-- PostDto mentése Tag-be -->
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -64,3 +105,5 @@
         </StackPanel>
     </Grid>
 </Window>
+
+ 
