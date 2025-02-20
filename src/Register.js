@@ -5,6 +5,7 @@ export default function Register() {
   const handleSubmit = (e) => {
   e.preventDefault();
   alert('Registration submitted!');
+  }
 
   
 return (
@@ -55,6 +56,5 @@ return (
       </button>
     </form>
   </div>
-    )
-  }
+  )
 }

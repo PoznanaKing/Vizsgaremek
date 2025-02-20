@@ -29,6 +29,7 @@
   color: white;
   border: none;
   position: fixed;
+  overflow: hidden;
   top: 5px;
   left: 15px;
   padding: 10px 15px;
