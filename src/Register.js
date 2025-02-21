@@ -1,11 +1,19 @@
 import React from 'react'
 import './Register.css';
+import axios from 'axios';
 
 export default function Register() {
   const handleSubmit = (e) => {
   e.preventDefault();
   alert('Registration submitted!');
   }
+
+  let Registration = {
+    
+  }
+
+  
+
 
   
 return (

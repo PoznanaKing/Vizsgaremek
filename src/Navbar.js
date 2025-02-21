@@ -12,11 +12,6 @@ const [isOpen, setIsOpen] = useState(false);
   const toggleNavbar = () => {
     setIsOpen(!isOpen)
   }
-  
-  const closeNavbar = () => {
-    setIsOpen(false)
-  }
-
 
 
   return (
@@ -29,13 +24,15 @@ const [isOpen, setIsOpen] = useState(false);
     {}
     <div className={`navbar ${isOpen ? 'open' : ''}`}>
       {}
-      <span className="closebtn" onClick={closeNavbar}>
+      <span className="closebtn" onClick={toggleNavbar}>
         &times;
       </span>
-      
       <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Services</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+      <div className='NavButtons'>
+       
+      </div> 
     </div>
   </div>
   )
