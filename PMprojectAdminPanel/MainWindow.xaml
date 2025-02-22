@@ -9,6 +9,9 @@
         Background="#2E2E2E" Foreground="White">
 
     <Window.Resources>
+        <!-- Base64 to Image Converter -->
+        <local:Base64ToImageConverter x:Key="Base64Converter"/>
+
         <!-- Gomb stílus -->
         <Style TargetType="Button">
             <Setter Property="Background" Value="#4A4A4A"/>
@@ -19,7 +22,8 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        <!-- Szövegdoboz stílus -->
+
+        <!-- TextBox stílus -->
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -29,7 +33,8 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        <!-- Jelszómező stílus -->
+
+        <!-- PasswordBox stílus -->
         <Style TargetType="PasswordBox">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -39,13 +44,15 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        <!-- Szövegblokk stílus -->
+
+        <!-- TextBlock stílus -->
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        <!-- Lista stílus -->
+
+        <!-- ListView stílus -->
         <Style TargetType="ListView">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -53,57 +60,150 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+
+        <!-- Posztok kártya stílus -->
+        <Style x:Key="PostCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#3E3E3E"/>
+            <Setter Property="BorderBrush" Value="#4A4A4A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="300"/>
+        </Style>
+
+        <!-- Edzőtermek kártya stílus -->
+        <Style x:Key="GymCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#3E3E3E"/>
+            <Setter Property="BorderBrush" Value="#4A4A4A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="300"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
-        <!-- Bejelentkezési panel -->
-        <Grid x:Name="mainGrid" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <!-- Két sor: 
+             1) a felső sor a navigációs sáv (navBar),
+             2) az alsó sor a tartalom (login / admin felület) -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Admin Bejelentkezés" FontSize="20" FontWeight="Bold" Margin="0 0 0 20"/>
-
-            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0 0 0 10">
-                <TextBlock Text="Felhasználónév" Margin="0 0 0 5"/>
-                <TextBox x:Name="txtUsername" Width="200"/>
+        <!-- Navigációs sáv -->
+        <DockPanel x:Name="navBar" Background="#3E3E3E" Grid.Row="0" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Content="Posztok" Margin="10 0" Click="NavigateToPosts"/>
+                <Button Content="Edzőtermek" Margin="10 0" Click="NavigateToGyms"/>
             </StackPanel>
-
-            <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0 0 0 20">
-                <TextBlock Text="Jelszó" Margin="0 0 0 5"/>
-                <PasswordBox x:Name="txtPassword" Width="200"/>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10">
+                <TextBlock x:Name="txtLoggedInLabel" Margin="0,0,10,0" VerticalAlignment="Center" 
+                           FontWeight="Bold" Text="Bejelentkezve:"/>
+                <Button x:Name="btnLogout" Content="Kijelentkezés" VerticalAlignment="Center" 
+                        Click="btnLogout_Click"/>
             </StackPanel>
+        </DockPanel>
 
-            <Button Grid.Row="3" x:Name="btnLogin" Content="Bejelentkezés" Width="100" 
-                    Click="btnLogin_Click"/>
+        <!-- Fő tartalom -->
+        <Grid Grid.Row="1">
+            <!-- Bejelentkezési felület -->
+            <Grid x:Name="mainGrid" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Admin Bejelentkezés" FontSize="20" FontWeight="Bold" 
+                           Margin="0 0 0 20"/>
+
+                <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0 0 0 10">
+                    <TextBlock Text="Felhasználónév" Margin="0 0 0 5"/>
+                    <TextBox x:Name="txtUsername" Width="200"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0 0 0 20">
+                    <TextBlock Text="Jelszó" Margin="0 0 0 5"/>
+                    <PasswordBox x:Name="txtPassword" Width="200"/>
+                </StackPanel>
+
+                <Button Grid.Row="3" x:Name="btnLogin" Content="Bejelentkezés" Width="100" 
+                        Click="btnLogin_Click"/>
+            </Grid>
+
+            <!-- Posztok panel -->
+            <Grid x:Name="topPanel" Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="postsListView">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource PostCardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding PostTitle}" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding PostDescription}" Margin="0 5 0 0"/>
+                                        <TextBlock Text="{Binding UploaderUsername}" Margin="0 5 0 0" FontStyle="Italic"/>
+                                        <Image Source="{Binding PostImage, Converter={StaticResource Base64Converter}}"
+                                               MaxHeight="200" Stretch="Uniform"/>
+                                        <Button Content="Törlés" Click="DeletePost_Click" Tag="{Binding}" Margin="0 5"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Edzőtermek panel -->
+            <Grid x:Name="gymPanel" Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="gymsListView">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource GymCardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding placename}" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding description}" TextWrapping="Wrap" Margin="0,5"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Cím: " FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding streetname}"/>
+                                            <TextBlock Text=", " />
+                                            <TextBlock Text="{Binding townname}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Irányítószám: " FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding postalcode}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Emelet: " FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding storylevel}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Értékelés: " FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding rating}"/>
+                                        </StackPanel>
+                                        <Button Content="Törlés" Click="DeleteGym_Click" Tag="{Binding}" Margin="0,5"/>
+                                        <Button Content="Módosítás" Click="EditGym_Click" Tag="{Binding}" Margin="0,5"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
         </Grid>
-
-        <!-- Admin panel -->
-        <StackPanel x:Name="topPanel" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <DockPanel Background="#3E3E3E" Margin="0 0 0 10">
-                <TextBlock x:Name="txtAdminName" Margin="10" FontWeight="Bold"/>
-                <Button x:Name="btnLogout" Content="Kijelentkezés" DockPanel.Dock="Right" 
-                        Margin="10" Click="btnLogout_Click"/>
-            </DockPanel>
-
-            <ListView x:Name="postsListView">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding PostTitle}"/>
-                            <Button Content="Törlés" 
-                        Click="DeletePost_Click"
-                        Tag="{Binding}"/>
-                            <!-- PostDto mentése Tag-be -->
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackPanel>
     </Grid>
 </Window>
-
- 
