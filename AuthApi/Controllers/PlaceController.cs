@@ -36,7 +36,7 @@ namespace AuthApi.Controllers
             return BadRequest("Hiba történt a hely feltöltése során."); // Hibakezelés
         }
         [Authorize(Roles = "Admin,PlaceOwner")]
-        [HttpPut("EditPlaceData")]
+        [HttpPut("EditPlaceData/{placeid}")]
         public async Task<ActionResult> EditPlaceData(EditPlaceDTO editPlaceDTO)
         {
             // Lekérdezzük a meglévő entitást az adatbázisból
@@ -62,23 +62,20 @@ namespace AuthApi.Controllers
             return Ok(new { result = existingPlace, message = "Sikeres módosítás." });
         }
         [Authorize(Roles = "Admin,PlaceOwner")]
-        [HttpDelete("DeletePost")]
-        public async Task<ActionResult> DeletePlace(DeletePlaceDTO deletePlaceDTO)
+        [HttpDelete("DeletePost/{placeid}")]
+        public async Task<ActionResult> DeletePlace(int placeid)
         {
-
-            if (deletePlaceDTO == null)
+            if (placeid <= 0)
             {
                 return BadRequest(new { message = "Érvénytelen adatok." });
             }
-            
+
+            var deletePlaceDTO = new DeletePlaceDTO { placeid = placeid};
             var deletingPlace = await place.DeletePlace(deletePlaceDTO);
             if (deletingPlace != null)
             {
-                _context.places.Remove(deletingPlace);
-                await _context.SaveChangesAsync();
                 return Ok(new { result = deletingPlace, message = "Sikeres törlés." });
             }
-
             return NotFound(new { message = "A hely nem található." });
         }
         [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]

@@ -28,9 +28,19 @@ namespace AuthApi.Services
 
         public async Task<PlaceTable> EditPlace(EditPlaceDTO editPlaceDTO)
         {
-            var editingPlace = await _appDbContext.places.FirstOrDefaultAsync(x=>x.PlaceId==editPlaceDTO.placeid);
+            var editingPlace = await _appDbContext.places.FirstOrDefaultAsync(x => x.PlaceId == editPlaceDTO.placeid);
             if (editingPlace != null)
             {
+                editingPlace.PlaceName = editPlaceDTO.placename;
+                editingPlace.Description = editPlaceDTO.description;
+                editingPlace.PostalCode = editPlaceDTO.postalcode;
+                editingPlace.Rating = editPlaceDTO.rating;
+                editingPlace.StoryLevel = editPlaceDTO.storylevel;
+                editingPlace.StreetName = editPlaceDTO.streetname;
+                editingPlace.TownName = editPlaceDTO.townname;
+
+                _appDbContext.places.Update(editingPlace);
+                await _appDbContext.SaveChangesAsync();
                 return editingPlace;
             }
             return null;

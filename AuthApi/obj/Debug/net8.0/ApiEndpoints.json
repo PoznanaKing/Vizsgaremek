@@ -71,14 +71,14 @@
   {
     "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "DeletePlace",
-    "RelativePath": "PlaceTable/DeletePost",
+    "RelativePath": "PlaceTable/DeletePost/{placeid}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "deletePlaceDTO",
-        "Type": "AuthApi.Models.Dtos.DeletePlaceDTO",
+        "Name": "placeid",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -87,7 +87,7 @@
   {
     "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "EditPlaceData",
-    "RelativePath": "PlaceTable/EditPlaceData",
+    "RelativePath": "PlaceTable/EditPlaceData/{placeid}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -95,6 +95,11 @@
       {
         "Name": "editPlaceDTO",
         "Type": "AuthApi.Models.Dtos.EditPlaceDTO",
+        "IsRequired": true
+      },
+      {
+        "Name": "placeid",
+        "Type": "",
         "IsRequired": true
       }
     ],

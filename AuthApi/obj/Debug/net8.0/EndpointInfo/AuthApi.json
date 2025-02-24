@@ -158,10 +158,20 @@
         }
       }
     },
-    "/PlaceTable/EditPlaceData": {
+    "/PlaceTable/EditPlaceData/{placeid}": {
       "put": {
         "tags": [
           "Place"
+        ],
+        "parameters": [
+          {
+            "name": "placeid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -189,30 +199,22 @@
         }
       }
     },
-    "/PlaceTable/DeletePost": {
+    "/PlaceTable/DeletePost/{placeid}": {
       "delete": {
         "tags": [
           "Place"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeletePlaceDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeletePlaceDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeletePlaceDTO"
-              }
+        "parameters": [
+          {
+            "name": "placeid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -552,16 +554,6 @@
         "type": "object",
         "properties": {
           "commentId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DeletePlaceDTO": {
-        "type": "object",
-        "properties": {
-          "placeid": {
             "type": "integer",
             "format": "int32"
           }
