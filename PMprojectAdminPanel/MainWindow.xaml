@@ -9,10 +9,10 @@
         Background="#2E2E2E" Foreground="White">
 
     <Window.Resources>
-        <!-- Base64 to Image Converter -->
+        
         <local:Base64ToImageConverter x:Key="Base64Converter"/>
 
-        <!-- Gomb stílus -->
+        
         <Style TargetType="Button">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -23,7 +23,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        <!-- TextBox stílus -->
+        
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -34,7 +34,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        <!-- PasswordBox stílus -->
+        
         <Style TargetType="PasswordBox">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -45,14 +45,14 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        <!-- TextBlock stílus -->
+        
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        <!-- ListView stílus -->
+        
         <Style TargetType="ListView">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -61,7 +61,7 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
 
-        <!-- Posztok kártya stílus -->
+        
         <Style x:Key="PostCardStyle" TargetType="Border">
             <Setter Property="Background" Value="#3E3E3E"/>
             <Setter Property="BorderBrush" Value="#4A4A4A"/>
@@ -72,7 +72,7 @@
             <Setter Property="Width" Value="300"/>
         </Style>
 
-        <!-- Edzőtermek kártya stílus -->
+       
         <Style x:Key="GymCardStyle" TargetType="Border">
             <Setter Property="Background" Value="#3E3E3E"/>
             <Setter Property="BorderBrush" Value="#4A4A4A"/>
@@ -85,15 +85,13 @@
     </Window.Resources>
 
     <Grid>
-        <!-- Két sor: 
-             1) a felső sor a navigációs sáv (navBar),
-             2) az alsó sor a tartalom (login / admin felület) -->
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Navigációs sáv -->
+        
         <DockPanel x:Name="navBar" Background="#3E3E3E" Grid.Row="0" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                 <Button Content="Posztok" Margin="10 0" Click="NavigateToPosts"/>
@@ -107,9 +105,8 @@
             </StackPanel>
         </DockPanel>
 
-        <!-- Fő tartalom -->
         <Grid Grid.Row="1">
-            <!-- Bejelentkezési felület -->
+            
             <Grid x:Name="mainGrid" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -135,7 +132,7 @@
                         Click="btnLogin_Click"/>
             </Grid>
 
-            <!-- Posztok panel -->
+            
             <Grid x:Name="topPanel" Visibility="Collapsed">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl x:Name="postsListView">
@@ -162,7 +159,7 @@
                 </ScrollViewer>
             </Grid>
 
-            <!-- Edzőtermek panel -->
+            
             <Grid x:Name="gymPanel" Visibility="Collapsed">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl x:Name="gymsListView">

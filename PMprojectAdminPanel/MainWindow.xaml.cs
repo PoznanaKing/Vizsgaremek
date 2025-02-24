@@ -306,22 +306,17 @@ namespace PMprojectAdminPanel
                 MessageBox.Show("Nincs jogosultság!");
                 return;
             }
-
             if (sender is Button button && button.Tag is PlaceDto gym)
             {
                 try
                 {
-                    var deleteGymDTO = new { place_id = gym.placeid };
-                    var jsonContent = new StringContent(
-                        JsonConvert.SerializeObject(deleteGymDTO),
-                        Encoding.UTF8,
-                        "application/json");
+                   
+                    var response = await _httpClient.DeleteAsync($"PlaceTable/DeletePost/{gym.placeid}");
 
-                    var response = await _httpClient.PostAsync("PlaceTable/DeletePost", jsonContent);
+                    
 
                     if (response.IsSuccessStatusCode)
                     {
-                        // Törlés után frissítjük az edzőtermek listáját
                         NavigateToGyms(null, null);
                     }
                     else
@@ -340,9 +335,7 @@ namespace PMprojectAdminPanel
             }
         }
 
-        /// <summary>
-        /// Gombkattintás: Edzőterem adatainak módosítása (felugró ablakban).
-        /// </summary>
+
         private async void EditGym_Click(object sender, RoutedEventArgs e)
         {
             if (!IsUserInRole("Admin"))
@@ -422,7 +415,8 @@ namespace PMprojectAdminPanel
                                 "application/json");
 
                             // Kérés elküldése a szerver felé
-                            var response = await _httpClient.PostAsync("PlaceTable/EditPlaceData", jsonContent);
+                            // In the saveButton.Click handler, modify the PUT request:
+                            var response = await _httpClient.PutAsync($"PlaceTable/EditPlaceData/{updatedGym.placeid}", jsonContent);
 
                             if (response.IsSuccessStatusCode)
                             {
