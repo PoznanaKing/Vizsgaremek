@@ -69,6 +69,28 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "SendMailFromTo",
+    "RelativePath": "auth/SendEmailUserTrainer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "emailFromToDTO",
+        "Type": "AuthApi.Models.Dtos.EmailFromToDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "DeletePlace",
     "RelativePath": "PlaceTable/DeletePost/{placeid}",
