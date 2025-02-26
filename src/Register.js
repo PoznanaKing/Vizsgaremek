@@ -3,16 +3,42 @@ import './Register.css';
 import axios from 'axios';
 
 export default function Register() {
-  const handleSubmit = (e) => {
-  e.preventDefault();
-  alert('Registration submitted!');
-  }
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showVerification, setShowVerification] = useState(false);
 
-  let Registration = {
-    
-  }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  
+        if (password !== confirmPassword) {
+            setErrorMessage('A jelszavak nem egyeznek!');
+            return;
+        }
+
+        try {
+            const response = await fetch(, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setSuccessMessage('Sikeres regisztráció!');
+                setTimeout(() => setShowVerification(true), 2000);
+            } else {
+                setErrorMessage(data.message || 'Hiba történt a regisztráció során!');
+            }
+        } catch (error) {
+            setErrorMessage('Hálózati hiba történt. Próbáld újra később!');
+        }
+    };
+
 
 
   

@@ -2,10 +2,35 @@ import React from 'react'
 import './Login.css'
 
 export default function Login() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert('Login submitted!');
-  }
+    const [username, setUsername] = useState('');
+      const [password, setPassword] = useState('');
+      const [error, setError] = useState('');
+  
+      const handleLogin = async (e) => {
+          e.preventDefault();
+          setError('');
+  
+          try {
+              const response = await fetch(, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ username, password })
+              });
+  
+              if (!response.ok) {
+                  throw new Error('Hibás felhasználónév vagy jelszó');
+              }
+  
+              const data = await response.json();
+              console.log('Sikeres bejelentkezés:', data);
+              onClose();
+              localStorage.setItem('authToken', data.token);
+              localStorage.setItem('username', username);
+              setUser(username);
+          } catch (error) {
+              setError(error.message);
+          }
+      };
 
   return (
     <div className="login-page">
