@@ -98,10 +98,6 @@ namespace AuthApi.Controllers
 
             return BadRequest(new { message = "Sikertelen igazolás, hibás a kód!" });
         }
-        [HttpPost("SendEmailUserTrainer")]
-        public async void SendMailFromTo(EmailFromToDTO emailFromToDTO)
-        {
-            _email.SendMailFromTo(emailFromToDTO);
-        }
+        
     }
 }

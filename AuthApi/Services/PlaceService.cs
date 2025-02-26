@@ -28,22 +28,28 @@ namespace AuthApi.Services
 
         public async Task<PlaceTable> EditPlace(EditPlaceDTO editPlaceDTO)
         {
-            var editingPlace = await _appDbContext.places.FirstOrDefaultAsync(x => x.PlaceId == editPlaceDTO.placeid);
+            if (editPlaceDTO == null)
+            {
+                return null;
+            }
+
+            var editingPlace = await _appDbContext.places
+                .FirstOrDefaultAsync(x => x.PlaceId == editPlaceDTO.placeid);
+
             if (editingPlace != null)
             {
                 editingPlace.PlaceName = editPlaceDTO.placename;
+                editingPlace.TownName = editPlaceDTO.townname;
                 editingPlace.Description = editPlaceDTO.description;
                 editingPlace.PostalCode = editPlaceDTO.postalcode;
                 editingPlace.Rating = editPlaceDTO.rating;
                 editingPlace.StoryLevel = editPlaceDTO.storylevel;
                 editingPlace.StreetName = editPlaceDTO.streetname;
-                editingPlace.TownName = editPlaceDTO.townname;
 
-                _appDbContext.places.Update(editingPlace);
                 await _appDbContext.SaveChangesAsync();
-                return editingPlace;
             }
-            return null;
+
+            return editingPlace;
         }
 
         public async Task<PlaceTable> GetPlaceById(GetPlaceById getPlaceById)
@@ -60,6 +66,11 @@ namespace AuthApi.Services
 
         public Task<PlaceTable> UploadPlace(UploadPlaceDTO uploadPlaceDTO)
         {
+            if (uploadPlaceDTO == null)
+            {
+                return Task.FromResult<PlaceTable>(null);
+            }
+
             var newPlace = new PlaceTable
             {
                 PlaceName = uploadPlaceDTO.placename,
@@ -70,11 +81,8 @@ namespace AuthApi.Services
                 StoryLevel = uploadPlaceDTO.storylevel,
                 StreetName = uploadPlaceDTO.streetname,
             };
-            if (newPlace != null)
-            {
-                return Task.FromResult(newPlace);
-            }
-            return null;
+
+            return Task.FromResult(newPlace);
         }
     }
 }

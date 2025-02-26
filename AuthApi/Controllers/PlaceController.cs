@@ -25,18 +25,23 @@ namespace AuthApi.Controllers
         [HttpPost("UploadPlace")]
         public async Task<ActionResult> UploadPlace(UploadPlaceDTO uploadPlaceDTO)
         {
-            var newPlace = await place.UploadPlace(uploadPlaceDTO); // Itt az `await` hiányzott
-            if (newPlace != null)
+            if (uploadPlaceDTO == null)
             {
-                await _context.places.AddAsync(newPlace); // Itt is az `await` hiányzott
-                await _context.SaveChangesAsync(); // Mentés az adatbázisba
-                return Ok(newPlace); // Visszatérés az új hely adataival
+                return BadRequest("Érvénytelen adatok.");
             }
 
-            return BadRequest("Hiba történt a hely feltöltése során."); // Hibakezelés
+            var newPlace = await place.UploadPlace(uploadPlaceDTO);
+            if (newPlace != null)
+            {
+                await _context.places.AddAsync(newPlace);
+                await _context.SaveChangesAsync();
+                return Ok(newPlace);
+            }
+
+            return BadRequest("Hiba történt a hely feltöltése során.");
         }
         [Authorize(Roles = "Admin,PlaceOwner")]
-        [HttpPut("EditPlaceData/{placeid}")]
+        [HttpPut("EditPlaceData")]
         public async Task<ActionResult> EditPlaceData(EditPlaceDTO editPlaceDTO)
         {
             // Lekérdezzük a meglévő entitást az adatbázisból
@@ -62,20 +67,23 @@ namespace AuthApi.Controllers
             return Ok(new { result = existingPlace, message = "Sikeres módosítás." });
         }
         [Authorize(Roles = "Admin,PlaceOwner")]
-        [HttpDelete("DeletePost/{placeid}")]
-        public async Task<ActionResult> DeletePlace(int placeid)
+        [HttpDelete("DeletePost")]
+        public async Task<ActionResult> DeletePlace(DeletePlaceDTO deletePlaceDTO)
         {
-            if (placeid <= 0)
+
+            if (deletePlaceDTO == null)
             {
                 return BadRequest(new { message = "Érvénytelen adatok." });
             }
-
-            var deletePlaceDTO = new DeletePlaceDTO { placeid = placeid};
+            
             var deletingPlace = await place.DeletePlace(deletePlaceDTO);
             if (deletingPlace != null)
             {
+                _context.places.Remove(deletingPlace);
+                await _context.SaveChangesAsync();
                 return Ok(new { result = deletingPlace, message = "Sikeres törlés." });
             }
+
             return NotFound(new { message = "A hely nem található." });
         }
         [Authorize(Roles = "Admin,PlaceOwner,User,Trainer")]

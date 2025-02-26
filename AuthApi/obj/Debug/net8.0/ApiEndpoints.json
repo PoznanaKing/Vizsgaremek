@@ -69,38 +69,16 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AuthApi.Controllers.AuthController",
-    "Method": "SendMailFromTo",
-    "RelativePath": "auth/SendEmailUserTrainer",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "emailFromToDTO",
-        "Type": "AuthApi.Models.Dtos.EmailFromToDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
     "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "DeletePlace",
-    "RelativePath": "PlaceTable/DeletePost/{placeid}",
+    "RelativePath": "PlaceTable/DeletePost",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "placeid",
-        "Type": "System.Int32",
+        "Name": "deletePlaceDTO",
+        "Type": "AuthApi.Models.Dtos.DeletePlaceDTO",
         "IsRequired": true
       }
     ],
@@ -109,7 +87,7 @@
   {
     "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "EditPlaceData",
-    "RelativePath": "PlaceTable/EditPlaceData/{placeid}",
+    "RelativePath": "PlaceTable/EditPlaceData",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -117,11 +95,6 @@
       {
         "Name": "editPlaceDTO",
         "Type": "AuthApi.Models.Dtos.EditPlaceDTO",
-        "IsRequired": true
-      },
-      {
-        "Name": "placeid",
-        "Type": "",
         "IsRequired": true
       }
     ],
