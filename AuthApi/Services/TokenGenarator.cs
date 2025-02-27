@@ -23,7 +23,7 @@ namespace AuthApi.Services
 
                 var key = Encoding.ASCII.GetBytes(jwtOption.Secret);
 
-                var claimList = new List<Claim>//Mi legyen benne a Token-ben
+                var claimList = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub,applicationUser.Id),
                 new Claim(JwtRegisteredClaimNames.Name,applicationUser.UserName.ToString()),
@@ -32,7 +32,7 @@ namespace AuthApi.Services
 
                 claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-                var tokenDescription = new SecurityTokenDescriptor//Token beállításai
+                var tokenDescription = new SecurityTokenDescriptor
                 {
                     Audience = jwtOption.Audience,
                     Issuer = jwtOption.Issuer,

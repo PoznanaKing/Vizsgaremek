@@ -6,6 +6,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using System.Security.Claims;
 
 namespace AuthApi.Controllers
 {
@@ -127,18 +128,27 @@ namespace AuthApi.Controllers
         [HttpPost("sendCustomEmail")]
         public async Task<ActionResult> SendCustomEmail([FromBody] CustomEmailRequestDto request)
         {
-            // Lekérjük a felhasználót a userId alapján
-            var user = _appDbContext.Users.FirstOrDefault(x => x.Id == request.UserId);
-            if (user == null)
+            
+            var currentUser = HttpContext.User;
+            var userId = currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
+            var username = currentUser.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
             {
-                return BadRequest(new { message = "A felhasználó nem található!" });
+                return BadRequest(new { message = "Nem sikerült azonosítani a felhasználót!" });
             }
 
-            // Ellenőrizzük, hogy a felhasználó admin-e
-            var isAdmin = await _appDbContext.UserRoles.AnyAsync(ur => ur.UserId == request.UserId && ur.RoleId == "AdminRoleId"); // Itt az AdminRoleId-t be kell állítani a valós admin szerepkör ID-jára
+            
+            var isAdmin = await _appDbContext.UserRoles
+                .AnyAsync(ur => ur.UserId == userId && ur.RoleId == "AdminRoleId");
 
-            // Elküldjük az emailt
-            _email.SendCustomEmail(request.To, request.Content, user.UserName, isAdmin);
+            if (!isAdmin)
+            {
+                return BadRequest(new { message = "Nincs jogosultságod emailt küldeni!" });
+            }
+
+            
+            _email.SendCustomEmail(request.To, request.Content, username, isAdmin);
 
             return Ok(new { message = "Email sikeresen elküldve!" });
         }
