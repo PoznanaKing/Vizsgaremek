@@ -9,10 +9,8 @@
         Background="#2E2E2E" Foreground="White">
 
     <Window.Resources>
-        
         <local:Base64ToImageConverter x:Key="Base64Converter"/>
 
-        
         <Style TargetType="Button">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -23,7 +21,6 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -34,7 +31,6 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        
         <Style TargetType="PasswordBox">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -45,14 +41,12 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        
         <Style TargetType="ListView">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -61,7 +55,6 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
 
-        
         <Style x:Key="PostCardStyle" TargetType="Border">
             <Setter Property="Background" Value="#3E3E3E"/>
             <Setter Property="BorderBrush" Value="#4A4A4A"/>
@@ -72,7 +65,6 @@
             <Setter Property="Width" Value="300"/>
         </Style>
 
-       
         <Style x:Key="GymCardStyle" TargetType="Border">
             <Setter Property="Background" Value="#3E3E3E"/>
             <Setter Property="BorderBrush" Value="#4A4A4A"/>
@@ -85,17 +77,16 @@
     </Window.Resources>
 
     <Grid>
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        
         <DockPanel x:Name="navBar" Background="#3E3E3E" Grid.Row="0" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                 <Button Content="Posztok" Margin="10 0" Click="NavigateToPosts"/>
                 <Button Content="Edzőtermek" Margin="10 0" Click="NavigateToGyms"/>
+                <Button Content="Felhasználók" Margin="10 0" Click="NavigateToUsers"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10">
                 <TextBlock x:Name="txtLoggedInLabel" Margin="0,0,10,0" VerticalAlignment="Center" 
@@ -106,7 +97,6 @@
         </DockPanel>
 
         <Grid Grid.Row="1">
-            
             <Grid x:Name="mainGrid" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -132,7 +122,6 @@
                         Click="btnLogin_Click"/>
             </Grid>
 
-            
             <Grid x:Name="topPanel" Visibility="Collapsed">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl x:Name="postsListView">
@@ -159,7 +148,6 @@
                 </ScrollViewer>
             </Grid>
 
-            
             <Grid x:Name="gymPanel" Visibility="Collapsed">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl x:Name="gymsListView">
@@ -189,6 +177,29 @@
                                         </StackPanel>
                                         <Button Content="Törlés" Click="DeleteGym_Click" Tag="{Binding}" Margin="0,5"/>
                                         <Button Content="Módosítás" Click="EditGym_Click" Tag="{Binding}" Margin="0,5"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+            <Grid x:Name="usersPanel" Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="usersListView">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource GymCardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding username}" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding email}" Margin="0 5 0 0"/>
+                                        <Button Content="Törlés" Click="DeleteUser_Click" Tag="{Binding userId}" Margin="0 5"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

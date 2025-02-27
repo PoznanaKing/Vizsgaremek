@@ -332,6 +332,75 @@ namespace PMprojectAdminPanel
                 MessageBox.Show("Érvénytelen edzőterem adatok!");
             }
         }
+        private async void NavigateToUsers(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                topPanel.Visibility = Visibility.Collapsed;
+                gymPanel.Visibility = Visibility.Collapsed;
+                usersPanel.Visibility = Visibility.Visible;
+
+                var response = await _httpClient.GetAsync("auth/users");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    var users = JsonConvert.DeserializeObject<List<UserDto>>(jsonResponse);
+
+                    if (users != null)
+                    {
+                        usersListView.ItemsSource = users;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nincsenek megjeleníthető felhasználók.");
+                    }
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Hiba történt a felhasználók betöltésekor: {errorResponse}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba történt: {ex.Message}");
+            }
+        }
+
+        private async void DeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (!IsUserInRole("Admin"))
+            {
+                MessageBox.Show("Nincs jogosultság!");
+                return;
+            }
+
+            if (sender is Button button && button.Tag is string userId)
+            {
+                try
+                {
+                    var response = await _httpClient.DeleteAsync($"auth/users/{userId}");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        NavigateToUsers(null, null);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Hiba történt: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba a törlés során: {ex.Message}");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Érvénytelen felhasználói adatok!");
+            }
+        }
 
 
         private async void EditGym_Click(object sender, RoutedEventArgs e)
@@ -447,6 +516,7 @@ namespace PMprojectAdminPanel
                     MessageBox.Show($"Hiba: {ex.Message}");
                 }
             }
+
         }
 
         
@@ -536,5 +606,11 @@ namespace PMprojectAdminPanel
         public int? storylevel { get; set; }
         public string description { get; set; }
         public double? rating { get; set; }
+    }
+    public class UserDto
+    {
+        public string userId { get; set; }
+        public string username { get; set; }
+        public string email { get; set; }
     }
 }
