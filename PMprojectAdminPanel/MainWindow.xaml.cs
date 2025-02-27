@@ -310,10 +310,8 @@ namespace PMprojectAdminPanel
             {
                 try
                 {
-                   
-                    var response = await _httpClient.DeleteAsync($"PlaceTable/DeletePost/{gym.placeId}");
-
                     
+                    var response = await _httpClient.DeleteAsync($"PlaceTable/DeletePost/{gym.placeId}");
 
                     if (response.IsSuccessStatusCode)
                     {
