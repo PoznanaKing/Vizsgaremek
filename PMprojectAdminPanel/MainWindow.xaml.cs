@@ -95,7 +95,7 @@ namespace PMprojectAdminPanel
                             mainGrid.Visibility = Visibility.Collapsed;
                             navBar.Visibility = Visibility.Visible;
 
-                            // Alapértelmezetten a posztokat töltjük be
+                            
                             await LoadPostsAsync();
                         }
                         else
@@ -132,9 +132,9 @@ namespace PMprojectAdminPanel
         {
             try
             {
-                // Edzőtermek panel elrejtése
+                
                 gymPanel.Visibility = Visibility.Collapsed;
-                // Posztok panel megjelenítése
+                
                 topPanel.Visibility = Visibility.Visible;
 
                 var response = await _httpClient.GetAsync("Posttable/GetAllPostsWithComments");
@@ -311,7 +311,7 @@ namespace PMprojectAdminPanel
                 try
                 {
                    
-                    var response = await _httpClient.DeleteAsync($"PlaceTable/DeletePost/{gym.placeid}");
+                    var response = await _httpClient.DeleteAsync($"PlaceTable/DeletePost/{gym.placeId}");
 
                     
 
@@ -344,29 +344,29 @@ namespace PMprojectAdminPanel
                 return;
             }
 
-            // A gomb Tag property-jében kapjuk meg a PlaceDto-t
+            
             if (sender is Button button && button.Tag is PlaceDto gym)
             {
                 try
                 {
-                    // Létrehozunk egy új ablakot, ahol a mezőket be lehet állítani
+                    
                     var editWindow = new Window
                     {
                         Title = "Edzőterem módosítása",
                         Width = 400,
-                        Height = 500,
+                        Height = 550,
                         Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2E2E2E"))
                     };
 
                     var grid = new Grid { Margin = new Thickness(20) };
 
-                    // 7 sor a mezőknek, +1 sor a gombnak
+                    
                     for (int i = 0; i < 7; i++)
                     {
                         grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                     }
 
-                    // Létrehozzuk a mezőket
+                    
                     var nameTextBox = new TextBox { Text = gym.placename };
                     var postalCodeTextBox = new TextBox { Text = gym.postalcode.ToString() };
                     var townNameTextBox = new TextBox { Text = gym.townname };
@@ -375,7 +375,7 @@ namespace PMprojectAdminPanel
                     var descriptionTextBox = new TextBox { Text = gym.description, TextWrapping = TextWrapping.Wrap, Height = 100 };
                     var ratingTextBox = new TextBox { Text = gym.rating?.ToString() ?? "" };
 
-                    // Felcímkézzük a mezőket
+                    
                     AddFormField(grid, 0, "Név:", nameTextBox);
                     AddFormField(grid, 1, "Irányítószám:", postalCodeTextBox);
                     AddFormField(grid, 2, "Város:", townNameTextBox);
@@ -392,14 +392,15 @@ namespace PMprojectAdminPanel
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
 
-                    // Mentés gomb eseménykezelő
+                    
                     saveButton.Click += async (s, args) =>
                     {
                         try
                         {
+                            MessageBox.Show(gym.placeId.ToString());
                             var updatedGym = new
                             {
-                                placeid = gym.placeid,
+                                placeId = gym.placeId,
                                 placename = nameTextBox.Text,
                                 postalcode = int.Parse(postalCodeTextBox.Text),
                                 townname = townNameTextBox.Text,
@@ -414,14 +415,13 @@ namespace PMprojectAdminPanel
                                 Encoding.UTF8,
                                 "application/json");
 
-                            // Kérés elküldése a szerver felé
-                            // In the saveButton.Click handler, modify the PUT request:
-                            var response = await _httpClient.PutAsync($"PlaceTable/EditPlaceData/{updatedGym.placeid}", jsonContent);
+                            
+                            var response = await _httpClient.PutAsync($"PlaceTable/EditPlaceData/{updatedGym.placeId}", jsonContent);
 
                             if (response.IsSuccessStatusCode)
                             {
                                 editWindow.Close();
-                                // Siker után frissítjük az edzőtermek listáját
+                                
                                 NavigateToGyms(null, null);
                             }
                             else
@@ -436,7 +436,7 @@ namespace PMprojectAdminPanel
                         }
                     };
 
-                    // A gombnak is létrehozunk egy sort
+                    
                     grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                     Grid.SetRow(saveButton, 7);
                     grid.Children.Add(saveButton);
@@ -451,9 +451,7 @@ namespace PMprojectAdminPanel
             }
         }
 
-        /// <summary>
-        /// Segédfüggvény: címke + beviteli mező (TextBox) egy sorba illesztése a Gridben.
-        /// </summary>
+        
         private void AddFormField(Grid grid, int row, string label, TextBox textBox)
         {
             var stackPanel = new StackPanel { Margin = new Thickness(0, 5, 0, 5) };
@@ -473,9 +471,7 @@ namespace PMprojectAdminPanel
         }
     }
 
-    /// <summary>
-    /// Segédosztály a Base64-es kép dekódolásához.
-    /// </summary>
+    
     public class Base64ToImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -507,17 +503,13 @@ namespace PMprojectAdminPanel
         }
     }
 
-    /// <summary>
-    /// DTO a bejelentkezés válaszához.
-    /// </summary>
+    
     public class LoginResponseDto
     {
         public string Token { get; set; }
     }
 
-    /// <summary>
-    /// DTO a posztokhoz.
-    /// </summary>
+    
     public class PostDto
     {
         public int PostId { get; set; }
@@ -535,12 +527,10 @@ namespace PMprojectAdminPanel
         public string UserName { get; set; }
     }
 
-    /// <summary>
-    /// DTO az edzőtermekhez (Place).
-    /// </summary>
+    
     public class PlaceDto
     {
-        public int placeid { get; set; }
+        public int placeId { get; set; }
         public string placename { get; set; }
         public int postalcode { get; set; }
         public string townname { get; set; }
