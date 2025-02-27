@@ -158,10 +158,21 @@
         }
       }
     },
-    "/PlaceTable/EditPlaceData": {
+    "/PlaceTable/EditPlaceData/{placeId}": {
       "put": {
         "tags": [
           "Place"
+        ],
+        "parameters": [
+          {
+            "name": "placeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -599,7 +610,8 @@
           },
           "storylevel": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "description": {
             "type": "string",
@@ -607,7 +619,8 @@
           },
           "rating": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "placeid": {
             "type": "integer",
@@ -725,7 +738,8 @@
           },
           "storylevel": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "description": {
             "type": "string",
@@ -733,7 +747,8 @@
           },
           "rating": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false

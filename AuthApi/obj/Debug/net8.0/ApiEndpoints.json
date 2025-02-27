@@ -87,11 +87,16 @@
   {
     "ContainingType": "AuthApi.Controllers.PlaceController",
     "Method": "EditPlaceData",
-    "RelativePath": "PlaceTable/EditPlaceData",
+    "RelativePath": "PlaceTable/EditPlaceData/{placeId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "placeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "editPlaceDTO",
         "Type": "AuthApi.Models.Dtos.EditPlaceDTO",
