@@ -7,6 +7,6 @@ namespace emailApi.Services.IServices
     public interface IEmail
     {
         void SendMail(EmailDTO emailDTO, int code);
-        void SendCustomEmail(string to, string content, string senderUsername, bool isAdmin);
+        void SendMessageEmail(string toEmail, string senderUsername, string content);
     }
 }

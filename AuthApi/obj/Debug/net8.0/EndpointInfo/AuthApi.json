@@ -161,7 +161,7 @@
         }
       }
     },
-    "/auth/sendCustomEmail": {
+    "/auth/sendMessage": {
       "post": {
         "tags": [
           "Auth"
@@ -170,17 +170,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CustomEmailRequestDto"
+                "$ref": "#/components/schemas/SendMessageRequestDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CustomEmailRequestDto"
+                "$ref": "#/components/schemas/SendMessageRequestDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CustomEmailRequestDto"
+                "$ref": "#/components/schemas/SendMessageRequestDto"
               }
             }
           }
@@ -616,24 +616,6 @@
         },
         "additionalProperties": false
       },
-      "CustomEmailRequestDto": {
-        "type": "object",
-        "properties": {
-          "to": {
-            "type": "string",
-            "nullable": true
-          },
-          "content": {
-            "type": "string",
-            "nullable": true
-          },
-          "userId": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "DeleteCommentDTO": {
         "type": "object",
         "properties": {
@@ -744,6 +726,24 @@
             "nullable": true
           },
           "fullName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendMessageRequestDto": {
+        "type": "object",
+        "properties": {
+          "senderId": {
+            "type": "string",
+            "nullable": true
+          },
+          "receiverId": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
             "type": "string",
             "nullable": true
           }

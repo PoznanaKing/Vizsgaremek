@@ -125,33 +125,27 @@ namespace AuthApi.Controllers
             await _appDbContext.SaveChangesAsync();
             return Ok(new { message = "Felhasználó törölve." });
         }
-        [HttpPost("sendCustomEmail")]
-        public async Task<ActionResult> SendCustomEmail([FromBody] CustomEmailRequestDto request)
+        [HttpPost("sendMessage")]
+        public async Task<ActionResult> SendMessage([FromBody] SendMessageRequestDto request)
         {
-            
-            var currentUser = HttpContext.User;
-            var userId = currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
-            var username = currentUser.FindFirst(ClaimTypes.Name)?.Value;
+            var sender = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == request.SenderId);
+            var receiver = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == request.ReceiverId);
 
-            if (string.IsNullOrEmpty(userId))
+            if (sender == null || receiver == null)
             {
-                return BadRequest(new { message = "Nem sikerült azonosítani a felhasználót!" });
+                return BadRequest(new { message = "A küldő vagy fogadó nem található!" });
             }
 
-            
-            var isAdmin = await _appDbContext.UserRoles
-                .AnyAsync(ur => ur.UserId == userId && ur.RoleId == "AdminRoleId");
-
-            if (!isAdmin)
+            if (string.IsNullOrEmpty(receiver.Email))
             {
-                return BadRequest(new { message = "Nincs jogosultságod emailt küldeni!" });
+                return BadRequest(new { message = "A fogadónak nincs érvényes email címe!" });
             }
 
-            
-            _email.SendCustomEmail(request.To, request.Content, username, isAdmin);
+            _email.SendMessageEmail(receiver.Email, sender.UserName, request.Content);
 
-            return Ok(new { message = "Email sikeresen elküldve!" });
+            return Ok(new { message = "Üzenet sikeresen elküldve!" });
         }
+
 
     }
 }
