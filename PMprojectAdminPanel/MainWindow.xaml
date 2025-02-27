@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PMprojectAdminPanel"
         mc:Ignorable="d"
         Title="Admin Panel" Height="600" Width="800"
-        Background="#2E2E2E" Foreground="White">
+        Foreground="White">
 
     <Window.Resources>
         <local:Base64ToImageConverter x:Key="Base64Converter"/>
@@ -75,6 +75,10 @@
             <Setter Property="Width" Value="300"/>
         </Style>
     </Window.Resources>
+
+    <Window.Background>
+        <ImageBrush ImageSource="background.jpg" Stretch="UniformToFill"/>
+    </Window.Background>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -199,7 +203,10 @@
                                     <StackPanel>
                                         <TextBlock Text="{Binding username}" FontWeight="Bold"/>
                                         <TextBlock Text="{Binding email}" Margin="0 5 0 0"/>
-                                        <Button Content="Törlés" Click="DeleteUser_Click" Tag="{Binding userId}" Margin="0 5"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Törlés" Click="DeleteUser_Click" Tag="{Binding userId}" Margin="0 5"/>
+                                            <Button Content="Üzenet küldése" Click="SendMessage_Click" Tag="{Binding userId}" Margin="5"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

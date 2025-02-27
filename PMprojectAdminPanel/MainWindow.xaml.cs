@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
+using System.Diagnostics;
 
 namespace PMprojectAdminPanel
 {
@@ -22,6 +23,7 @@ namespace PMprojectAdminPanel
     {
         private string _jwtToken;
         private HttpClient _httpClient;
+        private string _currentUserId;
 
         public MainWindow()
         {
@@ -72,12 +74,14 @@ namespace PMprojectAdminPanel
 
                 if (response.IsSuccessStatusCode)
                 {
+                    
                     var jsonResponse = await response.Content.ReadAsStringAsync();
                     var loginResponse = JsonConvert.DeserializeObject<LoginResponseDto>(jsonResponse);
 
                     if (loginResponse != null && !string.IsNullOrEmpty(loginResponse.Token))
                     {
                         _jwtToken = loginResponse.Token;
+
                         SetAuthorizationHeader();
 
                         var handler = new JwtSecurityTokenHandler();
@@ -87,7 +91,16 @@ namespace PMprojectAdminPanel
                             .Where(c => c.Type == ClaimTypes.Role || c.Type == "role")
                             .Select(c => c.Value)
                             .ToList();
-
+                        var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
+                  ?? jwtToken.Claims.FirstOrDefault(c => c.Type == "sub");
+                        if (userIdClaim != null)
+                        {
+                            _currentUserId = userIdClaim.Value;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nem található felhasználó azonosító a tokenben.");
+                        }
                         if (roles.Contains("Admin"))
                         {
                             txtLoggedInLabel.Text = $"Bejelentkezve: {loginRequest.Username}";
@@ -130,6 +143,7 @@ namespace PMprojectAdminPanel
 
         private async Task LoadPostsAsync()
         {
+            
             try
             {
                 
@@ -261,16 +275,19 @@ namespace PMprojectAdminPanel
 
         private async void NavigateToPosts(object sender, RoutedEventArgs e)
         {
+            usersPanel.Visibility = Visibility.Collapsed; 
+            gymPanel.Visibility = Visibility.Collapsed;  
             await LoadPostsAsync();
         }
 
         private async void NavigateToGyms(object sender, RoutedEventArgs e)
         {
+            usersPanel.Visibility = Visibility.Collapsed; 
+            topPanel.Visibility = Visibility.Collapsed;   
+            gymPanel.Visibility = Visibility.Visible;     
+
             try
             {
-                topPanel.Visibility = Visibility.Collapsed;
-                gymPanel.Visibility = Visibility.Visible;
-
                 var response = await _httpClient.GetAsync("PlaceTable/GetAllPlaces");
 
                 if (response.IsSuccessStatusCode)
@@ -334,12 +351,12 @@ namespace PMprojectAdminPanel
         }
         private async void NavigateToUsers(object sender, RoutedEventArgs e)
         {
+            topPanel.Visibility = Visibility.Collapsed;  // Posztok panel elrejtése
+            gymPanel.Visibility = Visibility.Collapsed;  // Edzőtermek panel elrejtése
+            usersPanel.Visibility = Visibility.Visible;  // Felhasználók panel megjelenítése
+
             try
             {
-                topPanel.Visibility = Visibility.Collapsed;
-                gymPanel.Visibility = Visibility.Collapsed;
-                usersPanel.Visibility = Visibility.Visible;
-
                 var response = await _httpClient.GetAsync("auth/users");
 
                 if (response.IsSuccessStatusCode)
@@ -464,7 +481,7 @@ namespace PMprojectAdminPanel
                     {
                         try
                         {
-                            MessageBox.Show(gym.placeId.ToString());
+                            
                             var updatedGym = new
                             {
                                 placeId = gym.placeId,
@@ -518,8 +535,93 @@ namespace PMprojectAdminPanel
             }
 
         }
+        private async void SendMessage_Click(object sender, RoutedEventArgs e)
+        {
+            if (!IsUserInRole("Admin"))
+            {
+                MessageBox.Show("Nincs jogosultság!");
+                return;
+            }
 
-        
+            if (sender is Button button && button.Tag is string receiverId)
+            {
+                var dialog = new Window
+                {
+                    Title = "Üzenet küldése",
+                    Width = 300,
+                    Height = 200,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    Owner = this,
+                    Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2E2E2E"))
+                };
+
+                var stackPanel = new StackPanel { Margin = new Thickness(10) };
+                var textBox = new TextBox
+                {
+                    Margin = new Thickness(0, 0, 0, 10),
+                    AcceptsReturn = true,
+                    Height = 100,
+                    Background = Brushes.White,
+                    Foreground = Brushes.Black
+                };
+                var sendButton = new Button
+                {
+                    Content = "Küldés",
+                    Style = (Style)FindResource(typeof(Button))
+                };
+
+                sendButton.Click += async (s, args) =>
+                {
+                    if (string.IsNullOrWhiteSpace(textBox.Text))
+                    {
+                        MessageBox.Show("Üzenet szövege nem lehet üres!");
+                        return;
+                    }
+
+                    var messageRequest = new
+                    {
+                        senderId = _currentUserId, 
+                        receiverId = receiverId, 
+                        content = textBox.Text
+                    };
+                    
+                    try
+                    {
+                        var json = JsonConvert.SerializeObject(messageRequest);
+                        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                        // Ellenőrizd, hogy a _httpClient nem null, és a BaseAddress helyesen van beállítva
+                        var response = await _httpClient.PostAsync("auth/sendMessage", content);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Üzenet sikeresen elküldve!");
+                            dialog.Close();
+                        }
+                        else
+                        {
+                            var error = await response.Content.ReadAsStringAsync();
+                            MessageBox.Show($"Hiba történt: {error}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Hiba: {ex.Message}");
+                    }
+                };
+
+                stackPanel.Children.Add(textBox);
+                stackPanel.Children.Add(sendButton);
+                dialog.Content = stackPanel;
+                dialog.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Érvénytelen felhasználói adatok!");
+            }
+        }
+
+
         private void AddFormField(Grid grid, int row, string label, TextBox textBox)
         {
             var stackPanel = new StackPanel { Margin = new Thickness(0, 5, 0, 5) };
