@@ -33,6 +33,8 @@ namespace AuthApi.Services
             smtp.Send(email);
             smtp.Disconnect(true);
         }
+
+
         public void SendMessageEmail(string toEmail, string senderUsername, string content)
         {
             // Tól/től meghatározása
@@ -40,7 +42,7 @@ namespace AuthApi.Services
             var suffix = "aeiouáéíóúöüőű".Contains(lastChar) ? "-től" : "-tól";
 
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(_configuration["EmailSettings:EmailUserName"]));
+            email.From.Add(MailboxAddress.Parse(_configuration.GetSection("EmailSettings:EmailUserName").Value));
             email.To.Add(MailboxAddress.Parse(toEmail));
             email.Subject = "Új üzenet érkezett";
 
@@ -64,7 +66,7 @@ namespace AuthApi.Services
 
             using var smtp = new SmtpClient();
             smtp.Connect(_configuration["EmailSettings:EmailHost"], 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_configuration["EmailSettings:EmailUserName"], _configuration["EmailSettings:EmailPassword"]);
+            smtp.Authenticate(_configuration.GetSection("EmailSettings:EmailUserName").Value, _configuration.GetSection("EmailSettings:EmailPassword").Value);
             smtp.Send(email);
             smtp.Disconnect(true);
         }

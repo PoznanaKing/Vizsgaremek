@@ -733,19 +733,24 @@
         "additionalProperties": false
       },
       "SendMessageRequestDto": {
+        "required": [
+          "content",
+          "receiverId",
+          "senderId"
+        ],
         "type": "object",
         "properties": {
           "senderId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "receiverId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "content": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false

@@ -128,6 +128,11 @@ namespace AuthApi.Controllers
         [HttpPost("sendMessage")]
         public async Task<ActionResult> SendMessage([FromBody] SendMessageRequestDto request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var sender = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == request.SenderId);
             var receiver = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == request.ReceiverId);
 
