@@ -4,6 +4,7 @@ using AuthApi.Services.IService;
 using emailApi.Services.IServices;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace AuthApi.Controllers
@@ -98,6 +99,31 @@ namespace AuthApi.Controllers
 
             return BadRequest(new { message = "Sikertelen igazolás, hibás a kód!" });
         }
-        
+        [HttpGet("users")]
+        public async Task<ActionResult> GetAllUsers()
+        {
+            var users = await _appDbContext.applicationUsers
+            .Select(u => new
+                 {
+                   userId = u.Id,
+                   username = u.UserName,
+                   email = u.Email
+                  })
+            .ToListAsync();
+            return Ok(users);
+        }
+        [HttpDelete("users/{id}")]
+        public async Task<ActionResult> DeleteUser(string id)
+        {
+            var user = await _appDbContext.applicationUsers.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound(new { message = "Felhasználó nem található!" });
+            }
+            _appDbContext.applicationUsers.Remove(user);
+            await _appDbContext.SaveChangesAsync();
+            return Ok(new { message = "Felhasználó törölve." });
+        }
+
     }
 }

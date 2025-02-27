@@ -127,6 +127,40 @@
         }
       }
     },
+    "/auth/users": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/users/{id}": {
+      "delete": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/PlaceTable/UploadPlace": {
       "post": {
         "tags": [
@@ -200,30 +234,22 @@
         }
       }
     },
-    "/PlaceTable/DeletePost": {
+    "/PlaceTable/DeletePost/{placeId}": {
       "delete": {
         "tags": [
           "Place"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeletePlaceDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeletePlaceDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeletePlaceDTO"
-              }
+        "parameters": [
+          {
+            "name": "placeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -563,16 +589,6 @@
         "type": "object",
         "properties": {
           "commentId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DeletePlaceDTO": {
-        "type": "object",
-        "properties": {
-          "placeid": {
             "type": "integer",
             "format": "int32"
           }

@@ -69,16 +69,42 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AuthApi.Controllers.PlaceController",
-    "Method": "DeletePlace",
-    "RelativePath": "PlaceTable/DeletePost",
+    "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "GetAllUsers",
+    "RelativePath": "auth/users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "DeleteUser",
+    "RelativePath": "auth/users/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "deletePlaceDTO",
-        "Type": "AuthApi.Models.Dtos.DeletePlaceDTO",
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.PlaceController",
+    "Method": "DeletePlace",
+    "RelativePath": "PlaceTable/DeletePost/{placeId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "placeId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
