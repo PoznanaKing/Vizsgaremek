@@ -124,6 +124,24 @@ namespace AuthApi.Controllers
             await _appDbContext.SaveChangesAsync();
             return Ok(new { message = "Felhasználó törölve." });
         }
+        [HttpPost("sendCustomEmail")]
+        public async Task<ActionResult> SendCustomEmail([FromBody] CustomEmailRequestDto request)
+        {
+            // Lekérjük a felhasználót a userId alapján
+            var user = _appDbContext.Users.FirstOrDefault(x => x.Id == request.UserId);
+            if (user == null)
+            {
+                return BadRequest(new { message = "A felhasználó nem található!" });
+            }
+
+            // Ellenőrizzük, hogy a felhasználó admin-e
+            var isAdmin = await _appDbContext.UserRoles.AnyAsync(ur => ur.UserId == request.UserId && ur.RoleId == "AdminRoleId"); // Itt az AdminRoleId-t be kell állítani a valós admin szerepkör ID-jára
+
+            // Elküldjük az emailt
+            _email.SendCustomEmail(request.To, request.Content, user.UserName, isAdmin);
+
+            return Ok(new { message = "Email sikeresen elküldve!" });
+        }
 
     }
 }

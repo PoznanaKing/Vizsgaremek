@@ -70,6 +70,22 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "SendCustomEmail",
+    "RelativePath": "auth/sendCustomEmail",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AuthApi.Models.Dtos.CustomEmailRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.AuthController",
     "Method": "GetAllUsers",
     "RelativePath": "auth/users",
     "HttpMethod": "GET",

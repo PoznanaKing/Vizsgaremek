@@ -5,5 +5,5 @@
     public record AssignRoleRequestDto(string UserName, string RoleName);
 
     public record EmailDTO(string To);
-    
+    public record CustomEmailRequestDto (string To, String Content, String UserId);
 }
