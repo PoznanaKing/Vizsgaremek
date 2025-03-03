@@ -57,7 +57,7 @@ namespace AuthApi.Controllers
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
                 _memoryCache.Set($"EmailVerificationCode_{registerRequestDto.Email}", code, cacheEntryOptions);
 
-                return Ok(user);
+                return Ok(new {user,code});
             }
 
             return BadRequest();

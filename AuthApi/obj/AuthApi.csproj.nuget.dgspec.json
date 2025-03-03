@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\vizsgaremek_25_02_27\\Backend\\AuthApi\\AuthApi.csproj": {}
+    "C:\\Alapcuccok\\backend\\AuthApi\\AuthApi.csproj": {}
   },
   "projects": {
-    "C:\\vizsgaremek_25_02_27\\Backend\\AuthApi\\AuthApi.csproj": {
+    "C:\\Alapcuccok\\backend\\AuthApi\\AuthApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\vizsgaremek_25_02_27\\Backend\\AuthApi\\AuthApi.csproj",
+        "projectUniqueName": "C:\\Alapcuccok\\backend\\AuthApi\\AuthApi.csproj",
         "projectName": "AuthApi",
-        "projectPath": "C:\\vizsgaremek_25_02_27\\Backend\\AuthApi\\AuthApi.csproj",
-        "packagesPath": "C:\\Users\\Pozsgain\\.nuget\\packages\\",
-        "outputPath": "C:\\vizsgaremek_25_02_27\\Backend\\AuthApi\\obj\\",
+        "projectPath": "C:\\Alapcuccok\\backend\\AuthApi\\AuthApi.csproj",
+        "packagesPath": "C:\\Users\\Tanulo\\.nuget\\packages\\",
+        "outputPath": "C:\\Alapcuccok\\backend\\AuthApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Pozsgain\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Tanulo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -43,7 +43,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
         "SdkAnalysisLevel": "9.0.100"
       },
@@ -101,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
