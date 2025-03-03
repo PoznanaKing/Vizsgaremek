@@ -1,41 +1,40 @@
 import React from 'react'
 import './Login.css'
 import {useState,onClose,setUser} from 'react';
-import { jwtDecode } from 'jwt-decode';
 
-export default function Login() {
-    const [username, setUsername] = useState('');
-      const [password, setPassword] = useState('');
-      const [error, setError] = useState('');
-  
-      const handleLogin = async (e) => {
-          e.preventDefault();
-          setError('');
-  
-          try {
-              const response = await fetch('https://localhost:7285/auth/login', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ username, password })
-              }
-              );
-  
-              if (!response.ok) {
-                  throw new Error('Hibás felhasználónév vagy jelszó');
-              }
-  
-              const data = await response.json();
-              console.log('Sikeres bejelentkezés:', data);
-              
-              onClose();
-              localStorage.setItem('authToken', data.token);
-              localStorage.setItem('username', username);
-              setUser(username);
-              
-          } catch (error) {
-              setError(error.message);
+export default function Login({ onLoginSuccess }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = async (e) => {
+      e.preventDefault();
+      setError('');
+    
+      try {
+          const response = await fetch('https://localhost:7285/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username, password }),
+          });
+
+          if (!response.ok) {
+              throw new Error('Hibás felhasználónév vagy jelszó');
           }
-      };
+
+          const data = await response.json();
+          console.log('Sikeres bejelentkezés:', data);
+          
+          localStorage.setItem('authToken', data.token);
+          localStorage.setItem('username', username);
+
+          onLoginSuccess(username);
+
+      } catch (error) {
+          setError(error.message);
+      }
+  };
+
 
   return (
     <div className="login-page">
@@ -47,7 +46,7 @@ export default function Login() {
             Username:
           </label>
           <input
-            type="username"
+            type="text"
             id="username"
             name="username"
             placeholder="Enter your username"
