@@ -132,7 +132,7 @@ namespace AuthApi.Controllers
             var user = await _appDbContext.applicationUsers.FirstOrDefaultAsync(u => u.Id == id);
             if (user!=null)
             {
-                UserByIdDTO userByIdDTO = new UserByIdDTO(user.UserName, user.Id);
+                UserByIdDTO userByIdDTO = new UserByIdDTO(user.UserName, user.Id, user.Email);
                 
                 return Ok(userByIdDTO);
             }

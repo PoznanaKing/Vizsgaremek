@@ -19,5 +19,5 @@ namespace AuthApi.Models.Dtos
         [Required]
         public string Content { get; set; }
     }
-    public record UserByIdDTO(string username, string id);
+    public record UserByIdDTO(string username, string id, string email);
 }
