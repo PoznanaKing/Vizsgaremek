@@ -161,6 +161,27 @@
         }
       }
     },
+    "/auth/userById": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/auth/sendMessage": {
       "post": {
         "tags": [

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace AuthApi.Models.Dtos
 {
@@ -18,4 +19,5 @@ namespace AuthApi.Models.Dtos
         [Required]
         public string Content { get; set; }
     }
+    public record UserByIdDTO(string username, string id);
 }

@@ -125,6 +125,19 @@ namespace AuthApi.Controllers
             await _appDbContext.SaveChangesAsync();
             return Ok(new { message = "Felhasználó törölve." });
         }
+        [HttpGet("userById")]
+
+        public async Task<ActionResult> GetUserById(string id)
+        {
+            var user = await _appDbContext.applicationUsers.FirstOrDefaultAsync(u => u.Id == id);
+            if (user!=null)
+            {
+                UserByIdDTO userByIdDTO = new UserByIdDTO(user.UserName, user.Id);
+                
+                return Ok(userByIdDTO);
+            }
+            return NotFound();
+        }
         [HttpPost("sendMessage")]
         public async Task<ActionResult> SendMessage([FromBody] SendMessageRequestDto request)
         {
