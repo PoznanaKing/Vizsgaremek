@@ -104,15 +104,24 @@ namespace AuthApi.Controllers
         public async Task<ActionResult> GetAllUsers()
         {
             var users = await _appDbContext.applicationUsers
-            .Select(u => new
-                 {
-                   userId = u.Id,
-                   username = u.UserName,
-                   email = u.Email
-                  })
-            .ToListAsync();
+                .Select(u => new
+                {
+                    userId = u.Id,
+                    username = u.UserName,
+                    email = u.Email,
+                    roles = _appDbContext.UserRoles
+                                .Where(ur => ur.UserId == u.Id)
+                                .Join(_appDbContext.Roles,
+                                      ur => ur.RoleId,
+                                      r => r.Id,
+                                      (ur, r) => r.Name)
+                                .ToList()
+                })
+                .ToListAsync();
+
             return Ok(users);
         }
+
         [HttpDelete("users/{id}")]
         public async Task<ActionResult> DeleteUser(string id)
         {
