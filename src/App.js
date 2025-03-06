@@ -7,6 +7,7 @@ import Login from './Login';
 import Register from './Register';
 import { useState,useEffect } from 'react';
 import LoggedInPage from './LoggedInPage';
+import ListEdzok from './ListEdzok';
 
 
 function App() {
@@ -41,13 +42,15 @@ return (
     <Routes>
       <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess}/>} />
       <Route path="/register" element={<Register />} />
-      <Route path='/loggedinpage' element={<LoggedInPage/>}/>
+      <Route path='/loggedInPage' element={<LoggedInPage/>}/>
+      <Route path="/edzok" element={<ListEdzok />}/>
     </Routes>
     
 
 
 
     <Footer />
+    
     </div>
   )
 }

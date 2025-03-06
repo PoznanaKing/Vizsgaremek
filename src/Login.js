@@ -33,7 +33,7 @@ export default function Login({ onLoginSuccess }) {
           
 
           onLoginSuccess(username);
-          navigate("loggedinpage")
+          navigate("/loggedInPage")
 
       } catch (error) {
           setError(error.message);

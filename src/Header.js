@@ -17,7 +17,7 @@ export default function Header({ isLoggedIn , logout}) {
           </div>
         ) : (
         <div>
-          <p>Üdv {localStorage.getItem("username")}</p>
+          <p style={{color:"white"}}>Üdv {localStorage.getItem("username")}</p>
           <div className="auth-buttons">
           <button onClick={logout} >Kijelentkezés</button>
           </div>

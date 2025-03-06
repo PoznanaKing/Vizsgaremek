@@ -1,0 +1,41 @@
+.NavigatorSideBar {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    margin-top: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.NavigatorSideBar button {
+    background-color: #2F4F4F;
+    color: white;
+    border: none; 
+    padding: 10px 20px;
+    margin: 10px 0; 
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    width: 100%; 
+    text-align: left;
+}
+
+.NavigatorSideBar button:hover {
+    background-color: #444;
+}
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+
+.main-content-right {
+    margin-right: 220px;
+    padding: 20px;
+}
