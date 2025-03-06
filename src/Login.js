@@ -1,12 +1,13 @@
 import React from 'react'
 import './Login.css'
 import {useState,onClose,setUser} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const navigate = useNavigate()
   const handleLogin = async (e) => {
       e.preventDefault();
       setError('');
@@ -23,12 +24,16 @@ export default function Login({ onLoginSuccess }) {
           }
 
           const data = await response.json();
-          console.log('Sikeres bejelentkezés:', data);
+          console.log('Sikeres bejelentkezés');
+
           
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('username', username);
+          
+          
 
           onLoginSuccess(username);
+          navigate("loggedinpage")
 
       } catch (error) {
           setError(error.message);

@@ -6,6 +6,7 @@ import {Route, Routes} from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import { useState,useEffect } from 'react';
+import LoggedInPage from './LoggedInPage';
 
 
 function App() {
@@ -36,10 +37,11 @@ function App() {
  
 return (
   <div className="App">
-    <Header />
+    <Header isLoggedIn={isLoggedIn} logout={handleLogout}/>
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess}/>} />
       <Route path="/register" element={<Register />} />
+      <Route path='/loggedinpage' element={<LoggedInPage/>}/>
     </Routes>
     
 
