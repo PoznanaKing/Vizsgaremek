@@ -57,3 +57,52 @@
 .register-button:hover {
   background-color: #2f4f4f;
 }
+.verification-section {
+  text-align: center;
+  padding: 2rem;
+}
+
+.verification-info {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.verification-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.verification-button:hover {
+  background-color: #45a049;
+}
+.verification-section {
+  text-align: center;
+  padding: 2rem;
+}
+
+.verification-info {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.verification-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.verification-button:hover {
+  background-color: #45a049;
+}
