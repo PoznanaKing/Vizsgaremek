@@ -9,6 +9,8 @@
   text-align: left;
   font-size: 15px;
   border-top: 3px solid darkslategray;
+  height: 60px;
+  z-index: 2; 
 }
   
 .footer .contact-info {

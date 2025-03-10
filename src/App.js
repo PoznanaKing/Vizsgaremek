@@ -43,7 +43,10 @@ return (
       <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess}/>} />
       <Route path="/register" element={<Register />} />
       <Route path='/loggedInPage' element={<LoggedInPage/>}/>
-      <Route path="/edzok" element={<ListEdzok />}/>
+      <Route path="/edzok" element={<ListEdzok />} />
+          <Route path="/edzoterem"  />
+          <Route path="/posztok"  />
+          <Route path="/beallitasok"  />
     </Routes>
     
 

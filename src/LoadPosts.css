@@ -1,0 +1,40 @@
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Középre igazítás */
+    padding: 20px;
+  }
+  
+  .post-card {
+    width: 50%;
+    background: white;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .post-card h2 {
+    color: #333;
+  }
+  
+  .post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .post-card p {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .post-card small {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #888;
+  }
+  

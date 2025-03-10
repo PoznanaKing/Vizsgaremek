@@ -5,13 +5,16 @@
     background-color: #f4f4f4;
     padding: 10px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    margin-top: 80px;
     position: fixed;
-    top: 0;
+    top: 85px; 
     left: 0;
-    height: 100vh;
+    bottom: 0;
+    height: calc(100vh - 85px); 
     overflow-y: auto;
+    border-left: 1px solid #ccc;
+    z-index: 0;
 }
+
 
 .NavigatorSideBar button {
     background-color: #2F4F4F;
@@ -24,14 +27,18 @@
     transition: background-color 0.3s; 
     width: 100%; 
     text-align: left;
+    
 }
 
 .NavigatorSideBar button:hover {
     background-color: #444;
+    
 }
-.main-content {
+#main-content {
     margin-left: 220px;
+    margin-top: 85px;
     padding: 20px;
+    padding-bottom: 60px; 
 }
 
 
