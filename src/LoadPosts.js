@@ -56,10 +56,10 @@ export default function LoadPosts() {
     }
   
     const formData = new FormData();
-    formData.append("post_title", newPost.postTitle); // A szerver "Title" mezőt vár
-    formData.append("post_description", newPost.postDescription); // A szerver "Description" mezőt vár
-    formData.append("post_image", document.querySelector('input[type="file"]').files[0]); // A szerver "Image" mezőt vár
-    formData.append("user_id", jwtDecode(token).sub); // A szerver "UserId" mezőt vár
+    formData.append("post_title", newPost.postTitle); 
+    formData.append("post_description", newPost.postDescription); 
+    formData.append("post_image", document.querySelector('input[type="file"]').files[0]); 
+    formData.append("user_id", jwtDecode(token).sub); 
   
     axios
       .post("https://localhost:7285/Posttable/UploadPost", formData, {
@@ -70,7 +70,7 @@ export default function LoadPosts() {
       })
       .then(() => {
         alert("Sikeres feltöltés!");
-        setShowUploadForm(false); // Elrejtjük az űrlapot
+        setShowUploadForm(false); 
         fetchPosts();
       })
       .catch((error) => {
