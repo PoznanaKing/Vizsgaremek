@@ -51,34 +51,36 @@ export default function LoadPosts() {
   
   const handleUploadPost = () => {
     if (!newPost.postTitle || !newPost.postImage || !newPost.postDescription) {
-        alert("Minden mezőt ki kell tölteni!");
-        return;
+      alert("Minden mezőt ki kell tölteni!");
+      return;
     }
-
+  
     const formData = new FormData();
     formData.append("post_title", newPost.postTitle); // A szerver "Title" mezőt vár
     formData.append("post_description", newPost.postDescription); // A szerver "Description" mezőt vár
     formData.append("post_image", document.querySelector('input[type="file"]').files[0]); // A szerver "Image" mezőt vár
     formData.append("user_id", jwtDecode(token).sub); // A szerver "UserId" mezőt vár
-
-    axios.post("https://localhost:7285/Posttable/UploadPost", formData, {
+  
+    axios
+      .post("https://localhost:7285/Posttable/UploadPost", formData, {
         headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
-    })
-    .then(() => {
+      })
+      .then(() => {
         alert("Sikeres feltöltés!");
+        setShowUploadForm(false); // Elrejtjük az űrlapot
         fetchPosts();
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         if (error.response) {
-            console.error("Validációs hibák:", error.response.data.errors);
+          console.error("Validációs hibák:", error.response.data.errors);
         } else {
-            console.error("Hiba történt:", error.message);
+          console.error("Hiba történt:", error.message);
         }
-    });
-};
+      });
+  };
 
   return (
     <div className="posts-container">
