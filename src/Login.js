@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Login({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [token, settoken] = useState('')
   const [error, setError] = useState('');
   const navigate = useNavigate()
   const handleLogin = async (e) => {
@@ -16,8 +17,10 @@ export default function Login({ onLoginSuccess }) {
           const response = await fetch('https://localhost:7285/auth/login', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ username, password }),
-          });
+              body: JSON.stringify(
+                { username, password ,token}
+              ),
+          })
 
           if (!response.ok) {
               throw new Error('Hibás felhasználónév vagy jelszó');
@@ -25,11 +28,13 @@ export default function Login({ onLoginSuccess }) {
 
           const data = await response.json();
           console.log('Sikeres bejelentkezés');
-
+          console.log(data);
           
           localStorage.setItem('authToken', data.token);
+          console.log("Token: ",localStorage.getItem("authToken"));
+        
           localStorage.setItem('username', username);
-          
+          console.log("Username: ",localStorage.getItem("username"));
           
 
           onLoginSuccess(username);

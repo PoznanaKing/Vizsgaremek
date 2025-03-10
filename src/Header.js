@@ -1,8 +1,9 @@
 import React from 'react';
 import './Header.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header({ isLoggedIn , logout}) {
+  const navigator = useNavigate();
   return (
     <div>
       <header className="header">
@@ -19,7 +20,10 @@ export default function Header({ isLoggedIn , logout}) {
         <div>
           <p style={{color:"white"}}>Üdv {localStorage.getItem("username")}</p>
           <div className="auth-buttons">
-          <button onClick={logout} >Kijelentkezés</button>
+          <button onClick={()=>{
+            logout()
+            navigator("/Login")
+          }} >Kijelentkezés</button>
           </div>
         </div>
         )}
