@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import React, { useEffect, useState, useMemo } from 'react';
 import "./ListGyms.css";
 import { jwtDecode } from "jwt-decode";
@@ -21,6 +20,8 @@ export default function ListGyms() {
     rating: ""
   });
   
+  // Állapot az űrlap megjelenítéséhez/göngyölítéséhez
+  const [showAddForm, setShowAddForm] = useState(false);
   
   let userRole = "";
   const token = localStorage.getItem("authToken");
@@ -124,7 +125,7 @@ export default function ListGyms() {
       .catch(error => {
         console.error("Hiba történt az edzőtermek lekérésekor:", error);
       });
-      // Űrlap alaphelyzetbe állítása
+      // Űrlap alaphelyzetbe állítása és a form bezárása
       setNewPlace({
         placename: "",
         postalcode: "",
@@ -134,6 +135,7 @@ export default function ListGyms() {
         description: "",
         rating: ""
       });
+      setShowAddForm(false);
     })
     .catch(error => {
       console.error("Hiba történt a hozzáadáskor:", error);
@@ -166,65 +168,75 @@ export default function ListGyms() {
       </div>
       
       { (userRole === "Trainer" || userRole === "Admin") && (
-        <div className="add-place-form">
-          <h2>Új edzőterem hozzáadása</h2>
-          <form onSubmit={handleNewPlaceSubmit}>
-            <input
-              type="text"
-              name="placename"
-              placeholder="Edzőterem neve"
-              value={newPlace.placename}
-              onChange={handleNewPlaceChange}
-              required
-            />
-            <input
-              type="number"
-              name="postalcode"
-              placeholder="Irányítószám"
-              value={newPlace.postalcode}
-              onChange={handleNewPlaceChange}
-              required
-            />
-            <input
-              type="text"
-              name="townname"
-              placeholder="Település"
-              value={newPlace.townname}
-              onChange={handleNewPlaceChange}
-              required
-            />
-            <input
-              type="text"
-              name="streetname"
-              placeholder="Utca neve"
-              value={newPlace.streetname}
-              onChange={handleNewPlaceChange}
-              required
-            />
-            <input
-              type="number"
-              name="storylevel"
-              placeholder="Emelet (ha van)"
-              value={newPlace.storylevel}
-              onChange={handleNewPlaceChange}
-            />
-            <textarea
-              name="description"
-              placeholder="Leírás"
-              value={newPlace.description}
-              onChange={handleNewPlaceChange}
-              required
-            ></textarea>
-            <input
-              type="number"
-              name="rating"
-              placeholder="Értékelés"
-              value={newPlace.rating}
-              onChange={handleNewPlaceChange}
-              required
-            />
-            <button type="submit">Hozzáadás</button>
-          </form>
+        <div className="add-place-section">
+          <button 
+            onClick={() => setShowAddForm(!showAddForm)} 
+            className="toggle-add-form styled-button"
+          >
+            {showAddForm ? "Bezárás" : "Új edzőterem hozzáadása"}
+          </button>
+          {showAddForm && (
+            <div className="add-place-form">
+              <h2>Új edzőterem hozzáadása</h2>
+              <form onSubmit={handleNewPlaceSubmit}>
+                <input
+                  type="text"
+                  name="placename"
+                  placeholder="Edzőterem neve"
+                  value={newPlace.placename}
+                  onChange={handleNewPlaceChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="postalcode"
+                  placeholder="Irányítószám"
+                  value={newPlace.postalcode}
+                  onChange={handleNewPlaceChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="townname"
+                  placeholder="Település"
+                  value={newPlace.townname}
+                  onChange={handleNewPlaceChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="streetname"
+                  placeholder="Utca neve"
+                  value={newPlace.streetname}
+                  onChange={handleNewPlaceChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="storylevel"
+                  placeholder="Emelet (ha van)"
+                  value={newPlace.storylevel}
+                  onChange={handleNewPlaceChange}
+                />
+                <textarea
+                  name="description"
+                  placeholder="Leírás"
+                  value={newPlace.description}
+                  onChange={handleNewPlaceChange}
+                  required
+                ></textarea>
+                <input
+                  type="number"
+                  name="rating"
+                  placeholder="Értékelés"
+                  value={newPlace.rating}
+                  onChange={handleNewPlaceChange}
+                  required
+                />
+                <button type="submit">Hozzáadás</button>
+              </form>
+            </div>
+          )}
         </div>
       )}
       
