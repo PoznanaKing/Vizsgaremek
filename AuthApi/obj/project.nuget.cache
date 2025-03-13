@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "a6vqz3y0HmI=",
+  "dgSpecHash": "4MvnlWso31g=",
   "success": true,
-  "projectFilePath": "C:\\Backend_A_Frontendhez\\AuthApi\\AuthApi.csproj",
+  "projectFilePath": "C:\\VizsgaremekFrontendCucc1\\backend\\AuthApi\\AuthApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Pozsgain\\.nuget\\packages\\bouncycastle.cryptography\\2.5.0\\bouncycastle.cryptography.2.5.0.nupkg.sha512",
     "C:\\Users\\Pozsgain\\.nuget\\packages\\google.protobuf\\3.26.1\\google.protobuf.3.26.1.nupkg.sha512",

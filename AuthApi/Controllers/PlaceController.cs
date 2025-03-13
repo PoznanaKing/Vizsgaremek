@@ -40,6 +40,7 @@ namespace AuthApi.Controllers
 
             return BadRequest("Hiba történt a hely feltöltése során.");
         }
+        [Authorize(Roles = "Admin,PlaceOwner")]
         [HttpPut("EditPlaceData/{placeId}")]
         public async Task<ActionResult> EditPlaceData(int placeId, EditPlaceDTO editPlaceDTO)
         {

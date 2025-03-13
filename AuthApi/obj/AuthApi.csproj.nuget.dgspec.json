@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Backend_A_Frontendhez\\AuthApi\\AuthApi.csproj": {}
+    "C:\\VizsgaremekFrontendCucc1\\backend\\AuthApi\\AuthApi.csproj": {}
   },
   "projects": {
-    "C:\\Backend_A_Frontendhez\\AuthApi\\AuthApi.csproj": {
+    "C:\\VizsgaremekFrontendCucc1\\backend\\AuthApi\\AuthApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Backend_A_Frontendhez\\AuthApi\\AuthApi.csproj",
+        "projectUniqueName": "C:\\VizsgaremekFrontendCucc1\\backend\\AuthApi\\AuthApi.csproj",
         "projectName": "AuthApi",
-        "projectPath": "C:\\Backend_A_Frontendhez\\AuthApi\\AuthApi.csproj",
+        "projectPath": "C:\\VizsgaremekFrontendCucc1\\backend\\AuthApi\\AuthApi.csproj",
         "packagesPath": "C:\\Users\\Pozsgain\\.nuget\\packages\\",
-        "outputPath": "C:\\Backend_A_Frontendhez\\AuthApi\\obj\\",
+        "outputPath": "C:\\VizsgaremekFrontendCucc1\\backend\\AuthApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
