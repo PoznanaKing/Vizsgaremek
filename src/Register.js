@@ -1,20 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Register.css';
-import { useState } from 'react';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
-
-
-//todo:
-//Jelszó megfelelő kezelése
-//kinézet javítása.
-//hiba kijelzése, ha hibás a regisztrációs adatok.
-//fontos üzeneteket a felhasználónak jelezzük ki.
-//A regisztrációnál csináljunk egy töltődési felületet.
-//boostrap iconok kellenek!
-//regisztrációnál nem rossz a 2 másodperces timer.
-
-
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const [username, setUsername] = useState('');
@@ -27,9 +14,8 @@ export default function Register() {
   const [fullname, setFullname] = useState('');
   const [userId, setUserId] = useState(null);
   const [activationCodeInput, setActivationCodeInput] = useState('');
-  const navigate = useNavigate()
-
-    //Ez a regisztrációt kezelő függvény.
+  const [userType, setUserType] = useState('User');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,27 +31,22 @@ export default function Register() {
         password: password,
         email: email,
         fullName: fullname,
+        userType: userType,
       });
 
       const receivedUserId = response.data.user.result.id;
-
       setUserId(receivedUserId);
       setShowVerification(true);
       setSuccessMessage('Sikeres regisztráció! Kérjük erősítsd meg email címed az aktiváló kóddal.');
       setErrorMessage('');
-      
     } catch (error) {
       console.error("Regisztráció hiba:", error);
       setErrorMessage(error.response?.data?.message || 'Hálózati hiba történt. Próbáld újra később!');
     }
   };
 
-  //Ez a visszaigazoló kódot kezelő függvény.
-
   const handleVerification = async () => {
     try {
-      
-      
       if (!userId) {
         setErrorMessage('Hiányzó felhasználói azonosító. Kérjük, regisztráljon újra.');
         return;
@@ -75,15 +56,12 @@ export default function Register() {
         `https://localhost:7285/auth/EmailVerification?inputCode=${parseInt(activationCodeInput, 10)}&userId=${userId}`
       );
 
-      console.log("Megerősítés válasz:", response.data);
-      
       setSuccessMessage('Sikeres email megerősítés! Most már bejelentkezhetsz.');
       setErrorMessage('');
       setActivationCodeInput('');
-      navigate("/login")
+      navigate("/login");
     } catch (error) {
       console.error("Megerősítés hiba:", error);
-      console.error("Hibaadat:", error.response?.data);
       setErrorMessage(error.response?.data?.message || 'Aktiválási hiba történt.');
     }
   };
@@ -98,9 +76,7 @@ export default function Register() {
           {successMessage && <p className="success-message">{successMessage}</p>}
 
           <div className="input-group">
-            <label htmlFor="username" className="input-label">
-              Felhasználónév:
-            </label>
+            <label htmlFor="username" className="input-label">Felhasználónév:</label>
             <input
               type="text"
               id="username"
@@ -112,9 +88,7 @@ export default function Register() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="fullname" className="input-label">
-              Teljes név:
-            </label>
+            <label htmlFor="fullname" className="input-label">Teljes név:</label>
             <input
               type="text"
               id="fullname"
@@ -126,9 +100,7 @@ export default function Register() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="email" className="input-label">
-              Email:
-            </label>
+            <label htmlFor="email" className="input-label">Email:</label>
             <input
               type="email"
               id="email"
@@ -140,9 +112,7 @@ export default function Register() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="password" className="input-label">
-              Jelszó:
-            </label>
+            <label htmlFor="password" className="input-label">Jelszó:</label>
             <input
               type="password"
               id="password"
@@ -154,9 +124,7 @@ export default function Register() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="confirmPassword" className="input-label">
-              Jelszó megerősítése:
-            </label>
+            <label htmlFor="confirmPassword" className="input-label">Jelszó megerősítése:</label>
             <input
               type="password"
               id="confirmPassword"
@@ -167,19 +135,28 @@ export default function Register() {
             />
           </div>
 
-          <button type="submit" className="register-button">
-            Regisztráció
-          </button>
+          <div className="input-group">
+            <label htmlFor="userType" className="input-label">Fiók típusa:</label>
+            <select
+              id="userType"
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              className="input-field"
+              required
+            >
+              <option value="User">Felhasználó</option>
+              <option value="Trainer">Edző</option>
+              <option value="Placeowner">Helytulajdonos</option>
+            </select>
+          </div>
+
+          <button type="submit" className="register-button">Regisztráció</button>
         </form>
       ) : (
         <div className="verification-section">
-          <p className="verification-info">
-            Kérjük add meg az email címedre küldött aktiváló kódot!
-          </p>
+          <p className="verification-info">Kérjük add meg az email címedre küldött aktiváló kódot!</p>
           <div className="input-group">
-            <label htmlFor="activationCode" className="input-label">
-              Aktiváló kód:
-            </label>
+            <label htmlFor="activationCode" className="input-label">Aktiváló kód:</label>
             <input
               type="text"
               id="activationCode"
@@ -190,9 +167,7 @@ export default function Register() {
               required
             />
           </div>
-          <button onClick={handleVerification} className="verification-button">
-            Email hitelesítése
-          </button>
+          <button onClick={handleVerification} className="verification-button">Email hitelesítése</button>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {successMessage && <p className="success-message">{successMessage}</p>}
         </div>
