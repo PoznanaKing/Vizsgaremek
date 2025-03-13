@@ -16,7 +16,9 @@ export default function Register() {
   const [activationCodeInput, setActivationCodeInput] = useState('');
   const [userType, setUserType] = useState('User');
   const navigate = useNavigate();
+  console.log(userId);
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,7 +37,10 @@ export default function Register() {
       });
 
       const receivedUserId = response.data.user.result.id;
-      setUserId(receivedUserId);
+      console.log(receivedUserId);
+      setUserId(receivedUserId)
+      
+      
       setShowVerification(true);
       setSuccessMessage('Sikeres regisztráció! Kérjük erősítsd meg email címed az aktiváló kóddal.');
       setErrorMessage('');
@@ -44,6 +49,20 @@ export default function Register() {
       setErrorMessage(error.response?.data?.message || 'Hálózati hiba történt. Próbáld újra később!');
     }
   };
+  const handleAssignRole = async()=>{
+    try{
+      axios.post('https://localhost:7285/auth/assignRole',{
+        userName : username,
+        roleName : userType
+      })
+      .then(
+        console.log('Sikeres regisztrálció')
+      )
+    }
+    catch{
+      console.log('cumi van')
+    }
+  }
 
   const handleVerification = async () => {
     try {
@@ -167,7 +186,10 @@ export default function Register() {
               required
             />
           </div>
-          <button onClick={handleVerification} className="verification-button">Email hitelesítése</button>
+          <button onClick={()=>{
+            handleVerification()
+            handleAssignRole()
+          }}  className="verification-button">Email hitelesítése</button>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {successMessage && <p className="success-message">{successMessage}</p>}
         </div>
