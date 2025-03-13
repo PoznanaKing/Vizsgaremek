@@ -4,6 +4,18 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 
+
+//todo:
+//Jelszó megfelelő kezelése
+//kinézet javítása.
+//hiba kijelzése, ha hibás a regisztrációs adatok.
+//fontos üzeneteket a felhasználónak jelezzük ki.
+//A regisztrációnál csináljunk egy töltődési felületet.
+//boostrap iconok kellenek!
+//regisztrációnál nem rossz a 2 másodperces timer.
+
+
+
 export default function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -16,6 +28,8 @@ export default function Register() {
   const [userId, setUserId] = useState(null);
   const [activationCodeInput, setActivationCodeInput] = useState('');
   const navigate = useNavigate()
+
+    //Ez a regisztrációt kezelő függvény.
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,12 +47,8 @@ export default function Register() {
         fullName: fullname,
       });
 
-      
-      
-      
       const receivedUserId = response.data.user.result.id;
-      
-      
+
       setUserId(receivedUserId);
       setShowVerification(true);
       setSuccessMessage('Sikeres regisztráció! Kérjük erősítsd meg email címed az aktiváló kóddal.');
@@ -50,10 +60,11 @@ export default function Register() {
     }
   };
 
+  //Ez a visszaigazoló kódot kezelő függvény.
+
   const handleVerification = async () => {
     try {
       
-
       
       if (!userId) {
         setErrorMessage('Hiányzó felhasználói azonosító. Kérjük, regisztráljon újra.');
@@ -61,7 +72,7 @@ export default function Register() {
       }
 
       const response = await axios.put(
-        `https://localhost:7285/auth/EmailVerification?activationCode=${parseInt(activationCodeInput, 10)}&userId=${userId}`
+        `https://localhost:7285/auth/EmailVerification?inputCode=${parseInt(activationCodeInput, 10)}&userId=${userId}`
       );
 
       console.log("Megerősítés válasz:", response.data);
