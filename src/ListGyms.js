@@ -34,6 +34,7 @@ export default function ListGyms() {
     }
   }
   
+  // Lekérjük az edzőtermeket
   useEffect(() => {
     if (!token) {
       console.error("Nincs elérhető auth token, be kell jelentkezni!");
@@ -58,7 +59,32 @@ export default function ListGyms() {
     return [...new Set(places.map(place => place.townName))];
   }, [places]);
   
-  // A megjelenítendő lista frissítése
+  // Törlő funkció: csak az Admin számára elérhető
+  const handleDelete = (id) => {
+    console.log("Delete called for id:", id);
+    axios.delete("https://localhost:7285/PlaceTable/DeletePost/" + id, {
+      headers: { "Authorization": `Bearer ${token}` }
+    })
+    .then(response => {
+      alert("Törlés sikeres!");
+      // Frissítjük az edzőtermek listáját
+      axios.get("https://localhost:7285/PlaceTable/GetAllPlaces", {
+        headers: { "Authorization": `Bearer ${token}` }
+      })
+      .then(response => {
+        setPlaces(response.data);
+      })
+      .catch(error => {
+        console.error("Hiba történt az edzőtermek lekérésekor:", error);
+      });
+    })
+    .catch(error => {
+      console.error("Hiba történt a törléskor:", error.response ? error.response.data : error);
+      alert("Hiba történt a törléskor!");
+    });
+  };
+  
+  // A megjelenítendő lista frissítése, törlő ikon feltétellel Adminoknak
   function SetThePageDatas(filteredPlaces = places) {
     setContent(filteredPlaces.map((place, index) => (
       <li key={index}>
@@ -69,13 +95,21 @@ export default function ListGyms() {
         Emelet (Ha van): {place.storyLevel}<br/>
         Rövid leírása a teremnek: {place.description}<br/>
         Értékelése: {place.rating}
+        {userRole === "Admin" && (
+          <i 
+            className="bi bi-trash" 
+            onClick={() => handleDelete(place.placeId)}  
+            style={{ cursor: 'pointer', marginLeft: '10px', color: '#2F4F4F' }}
+            title="Törlés"
+          ></i>
+        )}
       </li>
     )));
   }
   
   useEffect(() => {
     SetThePageDatas();
-  }, [places]);
+  }, [places, userRole]);
   
   // Keresés gomb kezelése
   const handleSearch = () => {
@@ -113,7 +147,7 @@ export default function ListGyms() {
     })
     .then(response => {
       alert("Hozzáadás sikeres!");
-      // Frissítsük az edzőtermek listáját
+      // Frissítjük az edzőtermek listáját
       axios.get("https://localhost:7285/PlaceTable/GetAllPlaces", {
         headers: {
           "Authorization": `Bearer ${token}`
