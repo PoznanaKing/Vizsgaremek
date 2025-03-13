@@ -5,6 +5,7 @@ import ListEdzok from './ListEdzok';
 import ListGyms from './ListGyms';
 import LoadPosts from './LoadPosts';
 
+
 export default function LoggedInLayout() {
   const [content, setContent] = useState(null);
 
@@ -17,10 +18,12 @@ export default function LoggedInLayout() {
   const handlePosztClick=()=>{
     setContent(<LoadPosts/>)
   }
+  
 
   return (
     <div>
       <div className='NavigatorSideBar'>
+        
         <button onClick={handleEdzokClick}>Edzők</button>
         
           <button onClick={handleGymClick}>Edzőtermek</button>
