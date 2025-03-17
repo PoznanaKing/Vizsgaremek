@@ -15,15 +15,36 @@ export default function Register() {
   const [userId, setUserId] = useState(null);
   const [activationCodeInput, setActivationCodeInput] = useState('');
   const [userType, setUserType] = useState('User');
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const navigate = useNavigate();
-  console.log(userId);
 
-  
+  // Speciális karakterek és számjegyek listája
+  const specialChars = [
+    '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/',
+    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|',
+    '}', '~'
+  ];
+  const allNumbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+  // Segédfüggvények az ellenőrzéshez
+  const containsNumber = (str) => allNumbers.some((num) => str.includes(num));
+  const containsSpecial = (str) => specialChars.some((char) => str.includes(char));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       setErrorMessage('A jelszavak nem egyeznek!');
+      return;
+    }
+
+    // Ellenőrizze, hogy a felhasználónév és a jelszó tartalmaz-e legalább egy számot és egy speciális karaktert
+    if (!containsNumber(username) || !containsSpecial(username)) {
+      setErrorMessage('A felhasználónévnek legalább egy számot és egy speciális karaktert kell tartalmaznia!');
+      return;
+    }
+    if (!containsNumber(password) || !containsSpecial(password)) {
+      setErrorMessage('A jelszónak legalább egy számot és egy speciális karaktert kell tartalmaznia!');
       return;
     }
 
@@ -37,10 +58,7 @@ export default function Register() {
       });
 
       const receivedUserId = response.data.user.result.id;
-      console.log(receivedUserId);
-      setUserId(receivedUserId)
-      
-      
+      setUserId(receivedUserId);
       setShowVerification(true);
       setSuccessMessage('Sikeres regisztráció! Kérjük erősítsd meg email címed az aktiváló kóddal.');
       setErrorMessage('');
@@ -49,20 +67,19 @@ export default function Register() {
       setErrorMessage(error.response?.data?.message || 'Hálózati hiba történt. Próbáld újra később!');
     }
   };
-  const handleAssignRole = async()=>{
-    try{
-      axios.post('https://localhost:7285/auth/assignRole',{
-        userName : username,
-        roleName : userType
-      })
-      .then(
-        console.log('Sikeres regisztrálció')
-      )
+
+  const handleAssignRole = async () => {
+    try {
+      axios.post('https://localhost:7285/auth/assignRole', {
+        userName: username,
+        roleName: userType
+      }).then(() => {
+        console.log('Sikeres regisztráció');
+      });
+    } catch {
+      console.log('Hiba történt a szerepkör hozzárendelésekor.');
     }
-    catch{
-      console.log('cumi van')
-    }
-  }
+  };
 
   const handleVerification = async () => {
     try {
@@ -71,19 +88,33 @@ export default function Register() {
         return;
       }
 
-      const response = await axios.put(
+      await axios.put(
         `https://localhost:7285/auth/EmailVerification?inputCode=${parseInt(activationCodeInput, 10)}&userId=${userId}`
       );
 
-      setSuccessMessage('Sikeres email megerősítés! Most már bejelentkezhetsz.');
+      // A sikeres verifikáció után 3 másodpercre állítsuk be az átirányítást
+      setSuccessMessage('Sikeres regisztráció!');
       setErrorMessage('');
       setActivationCodeInput('');
-      navigate("/login");
+      setIsRedirecting(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     } catch (error) {
       console.error("Megerősítés hiba:", error);
       setErrorMessage(error.response?.data?.message || 'Aktiválási hiba történt.');
     }
   };
+
+  // Ha éppen átirányítunk, akkor a spinneres üzenetet jelenítjük meg
+  if (isRedirecting) {
+    return (
+      <div className="redirecting-section">
+        <p className="success-message">Sikeres regisztráció!</p>
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="register-page">
@@ -173,6 +204,9 @@ export default function Register() {
         </form>
       ) : (
         <div className="verification-section">
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {successMessage && <p className="success-message">{successMessage}</p>}
+
           <p className="verification-info">Kérjük add meg az email címedre küldött aktiváló kódot!</p>
           <div className="input-group">
             <label htmlFor="activationCode" className="input-label">Aktiváló kód:</label>
@@ -186,12 +220,10 @@ export default function Register() {
               required
             />
           </div>
-          <button onClick={()=>{
-            handleVerification()
-            handleAssignRole()
-          }}  className="verification-button">Email hitelesítése</button>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-          {successMessage && <p className="success-message">{successMessage}</p>}
+          <button onClick={() => {
+            handleVerification();
+            handleAssignRole();
+          }} className="verification-button">Email hitelesítése</button>
         </div>
       )}
     </div>
