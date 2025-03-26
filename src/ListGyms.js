@@ -41,6 +41,8 @@ export default function ListGyms() {
       return;
     }
     
+    
+
     axios.get("https://localhost:7285/PlaceTable/GetAllPlaces", {
       headers: {
         "Authorization": `Bearer ${token}`

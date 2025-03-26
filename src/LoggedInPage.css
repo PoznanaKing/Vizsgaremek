@@ -6,44 +6,66 @@
     padding: 10px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     position: fixed;
-    top: 85px; 
-    left: 0;
+    top: 85px;
     bottom: 0;
-    height: calc(100vh - 85px); 
+    height: calc(100vh - 85px);
     overflow-y: auto;
     border-left: 1px solid #ccc;
     z-index: 0;
-}
-
-
-.NavigatorSideBar button {
+    transition: left 0.3s;
+  }
+  
+  .NavigatorSideBar.visible {
+    left: 0;
+  }
+  
+  .NavigatorSideBar.hidden {
+    left: -200px;
+  }
+  
+  .NavigatorSideBar button {
     background-color: #2F4F4F;
     color: white;
-    border: none; 
+    border: none;
     padding: 10px 20px;
-    margin: 10px 0; 
-    font-size: 16px; 
+    margin: 10px 0;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s; 
-    width: 100%; 
+    transition: background-color 0.3s;
+    width: 100%;
     text-align: left;
-    
-}
-
-.NavigatorSideBar button:hover {
+  }
+  
+  .NavigatorSideBar button:hover {
     background-color: #444;
-    
-}
-#main-content {
-    margin-left: 220px;
+  }
+  
+  #main-content {
+    padding: 20px;
+    padding-bottom: 60px;
     margin-top: 85px;
-    padding: 20px;
-    padding-bottom: 60px; 
-    
-}
-
-
-.main-content-right {
-    margin-right: 220px;
-    padding: 20px;
-}
+    transition: margin-left 0.3s;
+  }
+  
+  .content-visible {
+    margin-left: 220px;
+  }
+  
+  .content-hidden {
+    margin-left: 20px;
+  }
+  
+  .toggle-button {
+    position: fixed;
+    top: 90px;
+    z-index: 1;
+    transition: left 0.3s;
+  }
+  
+  .toggle-button.visible {
+    left: 210px;
+  }
+  
+  .toggle-button.hidden {
+    left: 10px;
+  }

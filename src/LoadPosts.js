@@ -23,6 +23,8 @@ export default function LoadPosts() {
     fetchPosts();
   }, [token]);
 
+
+  console.log(token)
   const fetchPosts = () => {
     axios
       .get("https://localhost:7285/Posttable/GetAllPostsWithComments", {

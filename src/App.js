@@ -8,6 +8,7 @@ import Register from './Register';
 import { useState,useEffect } from 'react';
 import LoggedInPage from './LoggedInPage';
 import ListEdzok from './ListEdzok';
+import ProfilePage from './ProfilePage';
 
 
 function App() {
@@ -47,6 +48,7 @@ return (
           <Route path="/edzoterem"  />
           <Route path="/posztok"  />
           <Route path="/beallitasok"  />
+          <Route path="/profile" element={<ProfilePage />} />
     </Routes>
     
 
