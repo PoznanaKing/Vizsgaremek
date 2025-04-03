@@ -8,7 +8,7 @@ const Header = ({ isLoggedIn, username, onLogout, onLoginClick, onRegisterClick,
     <header className="header">
       <div className="header-container">
         <div className="logo">
-          <Link to="/" onClick={onHomeClick} className="nav-button">MP Fitness</Link>
+          <Link to="/" onClick={onHomeClick} className="nav-button">PM Fitness</Link>
         </div>
         
         <nav className="nav">
