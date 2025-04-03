@@ -1,93 +1,171 @@
-.register-page {
-  background-color: #413b3b;
-  min-height: 100vh;
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.register-modal {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 450px;
+  max-height: 90vh;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  padding: 15px 20px;
+  background-color: #2F4F4F;
   color: white;
+  flex-shrink: 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.modal-content {
   padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1;
 }
-  
-.register-heading {
-  color: darkslategray;
-  margin-bottom: 20px;
-}
-  
+
 .register-form {
-  background-color: #1e1e1e;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
-  
-.input-group {
-  margin-bottom: 15px;
+
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
-  
-.input-label {
+
+.form-group label {
   display: block;
   margin-bottom: 5px;
-  color: darkslategray;
+  color: #ccc;
 }
-  
-.input-field {
+
+.form-group input,
+.form-group select {
   width: 100%;
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid darkslategray;
+  border: 1px solid #444;
   background-color: #2a2a2a;
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
 }
-  
+
+.password-requirements {
+  margin-top: 8px;
+  padding: 8px;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+}
+
+.password-requirements p {
+  margin: 0 0 5px 0;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.password-requirements ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.password-requirements li {
+  list-style-type: none;
+  position: relative;
+  font-size: 0.85rem;
+  color: #ff6b6b;
+  margin-bottom: 3px;
+}
+
+.password-requirements li:before {
+  content: "✗";
+  position: absolute;
+  left: -15px;
+}
+
+.password-requirements li.valid {
+  color: #4CAF50;
+}
+
+.password-requirements li.valid:before {
+  content: "✓";
+}
+
 .register-button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border-radius: 4px;
   border: none;
-  background-color: darkslategray;
+  background-color: #2F4F4F;
   color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-  
-.register-button:hover {
-  background-color: #2f4f4f;
-}
-.verification-section {
-  text-align: center;
-  padding: 2rem;
-}
-
-.verification-info {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-
-.verification-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
   font-size: 1rem;
+  cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
-.verification-button:hover {
-  background-color: #45a049;
+.register-button:hover:not(:disabled) {
+  background-color: #3a5f5f;
 }
-.verification-section {
+
+.register-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.error-message {
+  color: #ff6b6b;
+  margin-bottom: 15px;
   text-align: center;
-  padding: 2rem;
+}
+
+.success-message {
+  color: #4CAF50;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.verification-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: center;
 }
 
 .verification-info {
-  color: #666;
+  color: #ccc;
   margin-bottom: 1.5rem;
 }
 
@@ -103,8 +181,14 @@
   margin-top: 1rem;
 }
 
-.verification-button:hover {
+.verification-button:hover:not(:disabled) {
   background-color: #45a049;
+}
+
+.verification-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .redirecting-section {
@@ -112,14 +196,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  padding: 2rem;
   text-align: center;
-}
-
-.success-message {
-  color: #4CAF50;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+  min-height: 200px;
 }
 
 .spinner {
@@ -129,6 +208,7 @@
   border-top: 5px solid #3498db;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  margin-top: 1rem;
 }
 
 @keyframes spin {

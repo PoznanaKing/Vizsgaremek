@@ -1,88 +1,74 @@
-import React from 'react'
-import './Login.css'
-import {useState,onClose,setUser} from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import './Login.css';
 
-export default function Login({ onLoginSuccess }) {
+const Login = ({ onLoginSuccess, onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [token, settoken] = useState('')
   const [error, setError] = useState('');
-  const navigate = useNavigate()
+
   const handleLogin = async (e) => {
-      e.preventDefault();
-      setError('');
-    
-      try {
-          const response = await fetch('https://localhost:7285/auth/login', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(
-                { username, password ,token}
-              ),
-          })
+    e.preventDefault();
+    setError('');
 
-          if (!response.ok) {
-              throw new Error('Hibás felhasználónév vagy jelszó');
-          }
+    try {
+      const response = await fetch('https://localhost:7285/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-          const data = await response.json();
-          console.log('Sikeres bejelentkezés');
-          console.log(data);
-          
-          localStorage.setItem('authToken', data.token);
-          console.log("Token: ",localStorage.getItem("authToken"));
-        
-          localStorage.setItem('username', username);
-          console.log("Username: ",localStorage.getItem("username"));
-          
-
-          onLoginSuccess(username);
-          navigate("/loggedInPage")
-
-      } catch (error) {
-          setError(error.message);
+      if (!response.ok) {
+        throw new Error('Hibás felhasználónév vagy jelszó');
       }
+
+      const data = await response.json();
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('username', username);
+      
+      onLoginSuccess(username);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
-
   return (
-    <div className="login-page">
-      <form onSubmit={handleLogin} className="login-form">
-        <h1 className="login-heading">Login</h1>
-        {error && <p className="error-message">{error}</p>}
-        <div className="input-group">
-          <label htmlFor="username" className="input-label">
-            Username:
-          </label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your username"
-            className="input-field"
-            value={username} onChange={(e) => setUsername(e.target.value)} 
-            required
-          />
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>Bejelentkezés</h2>
+          <button className="close-button" onClick={onClose}>×</button>
         </div>
-        <div className="input-group">
-          <label htmlFor="password" className="input-label">
-            Password:
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            className="input-field"
-            value={password} onChange={(e) => setPassword(e.target.value)} 
-            required
-          />
-        </div>
-        <button type="submit" className="login-button">
-          Login
-        </button>
-      </form>
+        
+        <form onSubmit={handleLogin} className="login-form">
+          {error && <p className="error-message">{error}</p>}
+          
+          <div className="form-group">
+            <label>Felhasználónév:</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Jelszó:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          
+          <button type="submit" className="login-button">
+            Bejelentkezés
+          </button>
+        </form>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default Login;

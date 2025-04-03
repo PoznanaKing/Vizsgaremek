@@ -1,108 +1,94 @@
-/* Header.css */
 .header {
-    background-color: #161515;
-    color: #2F4F4F;
-    padding: 26px;
-    text-align: center;
-    font-size: 24px;
-    border-bottom: 3px solid darkslategray;
-    position: fixed;
-    width: 100%;
-    height: 85px;
-    overflow: hidden;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-  }
-  
-  .navbar-logo {
-    height: 50px;
-    width: auto;
-    margin-left: 20px;
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-  
-  .navbar-logo:hover {
-    transform: scale(1.1);
-  }
-  
-  .auth-buttons {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-  
-  .auth-buttons button {
-    background-color: #2F4F4F;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-left: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .auth-buttons button:hover {
-    background-color: #444;
-  }
-  
-  .NavigatorSideBar {
-    display: flex;
+  background-color: #2F4F4F;
+  color: white;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.logo a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  transition: opacity 0.3s;
+}
+
+.logo a:hover {
+  opacity: 0.8;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-button {
+  background-color: #3a5f5f;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  background-color: #487878;
+}
+
+.username {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .header-container {
     flex-direction: column;
-    width: 200px;
-    background-color: #f4f4f4;
-    padding: 10px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 85px;
-    bottom: 0;
-    height: calc(100vh - 85px);
-    overflow-y: auto;
-    border-left: 1px solid #ccc;
-    z-index: 0;
-    transition: left 0.3s;
+    padding: 1rem;
   }
   
-  .NavigatorSideBar.visible {
-    left: 0;
+  .logo {
+    margin-bottom: 1rem;
   }
   
-  .NavigatorSideBar.hidden {
-    left: -200px;
+  .nav-list {
+    flex-wrap: wrap;
+    justify-content: center;
   }
-  
-  .NavigatorSideBar button {
-    background-color: #2F4F4F;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px 0;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
-    text-align: left;
-  }
-  
-  .NavigatorSideBar button:hover {
-    background-color: #444;
-  }
-  
-  #main-content {
-    padding: 20px;
-    padding-bottom: 60px;
-    margin-top: 85px;
-    transition: margin-left 0.3s;
-  }
-  
-  .content-visible {
-    margin-left: 220px;
-  }
-  
-  .content-hidden {
-    margin-left: 20px;
-  }
+}
