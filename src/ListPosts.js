@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import React, { useState, useEffect } from 'react';
 
 export default function ListPosts() {
@@ -7,7 +8,7 @@ export default function ListPosts() {
     const [error, setError] = useState(null);
 
     function getAllPosts() {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0YTU2ODE2YS1iYjg5LTQ5M2MtODZiZC01ZTRjNzI4NTgwNDMiLCJuYW1lIjpbIkFkbWluIiwiQWRtaW4iXSwicm9sZSI6IkFkbWluIiwibmJmIjoxNzQwOTkwMTkwLCJleHAiOjE3NDEwNzY1OTAsImlhdCI6MTc0MDk5MDE5MCwiaXNzIjoiYXV0aC1hcGkiLCJhdWQiOiJhdXRoLWNsaWVudCJ9.02OSC0MHscmJQmvnV8SinJD7a1IplIwP558N7p4q2nY";
+        const token = jwtDecode(localStorage.getItem("authToken"))
 
         setLoading(true);
         setError(null);
