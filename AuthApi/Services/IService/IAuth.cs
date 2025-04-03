@@ -8,5 +8,6 @@ namespace AuthApi.Services.IService
         Task<object> Register(RegisterRequestDto registerRequestDto);
         Task<object> AssignRole(AssignRoleRequestDto assignRoleRequestDto);
         Task<bool> EmailVerification(int inputCode, string userid,int code);
+        Task<object> UserDataUpdate(UserDataUpdateDTO userDataUpdateDTO);
     }
 }

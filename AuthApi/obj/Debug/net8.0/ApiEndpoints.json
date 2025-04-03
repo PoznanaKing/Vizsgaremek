@@ -86,6 +86,22 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.AuthController",
+    "Method": "UpdateUserData",
+    "RelativePath": "auth/UpdateUserData",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDataUpdateDTO",
+        "Type": "AuthApi.Models.Dtos.UserDataUpdateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.AuthController",
     "Method": "GetUserById",
     "RelativePath": "auth/userById",
     "HttpMethod": "GET",

@@ -102,5 +102,17 @@ namespace AuthApi.Services
 
             return result.Errors.FirstOrDefault().Description;
         }
+
+        public async Task<object> UserDataUpdate(UserDataUpdateDTO userDataUpdateDTO)
+        {
+            ApplicationUser updateduser = await _appDbContext.Users.FirstOrDefaultAsync(e=>e.Id==userDataUpdateDTO.id);
+            if (updateduser != null)
+            {
+                updateduser.UserName=userDataUpdateDTO.username;
+                updateduser.Email=userDataUpdateDTO.email;
+                return updateduser;
+            }
+            return null;
+        }
     }
 }

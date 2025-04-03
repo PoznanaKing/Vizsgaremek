@@ -20,4 +20,5 @@ namespace AuthApi.Models.Dtos
         public string Content { get; set; }
     }
     public record UserByIdDTO(string username, string id, string email);
+    public record UserDataUpdateDTO(string username, string email, string id);
 }

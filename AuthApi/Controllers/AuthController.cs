@@ -79,14 +79,14 @@ namespace AuthApi.Controllers
         [HttpPut("EmailVerification")]
         public async Task<ActionResult> EmailVerify(int inputCode, string userId)
         {
-            // Lekérjük a felhasználót a userId alapján
+            
             var user = _appDbContext.Users.FirstOrDefault(x => x.Id == userId);
             if (user == null)
             {
                 return BadRequest(new { message = "A felhasználó nem található!" });
             }
 
-            // A cache kulcsa az email cím, ahogy a regisztráció során mentettük
+            
             if (_memoryCache.TryGetValue($"EmailVerificationCode_{user.Email}", out int cachedCode))
             {
                 if (inputCode == cachedCode)
@@ -172,7 +172,23 @@ namespace AuthApi.Controllers
 
             return Ok(new { message = "Üzenet sikeresen elküldve!" });
         }
+        [HttpPut("UpdateUserData")]
+        public async Task<ActionResult> UpdateUserData(UserDataUpdateDTO userDataUpdateDTO)
+        {
+            if (userDataUpdateDTO != null)
+            {
+                var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == userDataUpdateDTO.id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                _auth.UserDataUpdate(userDataUpdateDTO);
+                _appDbContext.applicationUsers.Update(user);
+                await _appDbContext.SaveChangesAsync();
+                return Ok(new { message = "Sikeres módosítás" });
+            }
+            return StatusCode(500, new { message = "Hiányos adat." });
 
-
+        }
     }
 }
