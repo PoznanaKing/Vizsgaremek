@@ -59,18 +59,27 @@ export default function Settings() {
   }, []);
 
   const handleOpenUsernameModal = () => {
-    console.log("Felhasználónév módosító modal megnyitása...");
     setShowUsernameModal(true);
+    setShowEmailModal(false);
+    setShowPasswordModal(false);
+    setError(null);
+    setSuccess(null);
   };
 
   const handleOpenEmailModal = () => {
-    console.log("Email módosító modal megnyitása...");
+    setShowUsernameModal(false);
     setShowEmailModal(true);
+    setShowPasswordModal(false);
+    setError(null);
+    setSuccess(null);
   };
 
   const handleOpenPasswordModal = () => {
-    console.log("Jelszó módosító modal megnyitása...");
+    setShowUsernameModal(false);
+    setShowEmailModal(false);
     setShowPasswordModal(true);
+    setError(null);
+    setSuccess(null);
   };
 
   const handleUpdateUsername = async () => {
@@ -91,14 +100,11 @@ export default function Settings() {
         headers: { Authorization: `Bearer ${token}` }
       });
   
-      console.log("Szerver válasza:", response.data);
-  
       setUser({ ...user, username: newUsername });
       setSuccess('Felhasználónév sikeresen frissítve');
       setShowUsernameModal(false);
       setError(null);
     } catch (err) {
-      console.error("Hiba történt:", err.response || err);
       setError(err.response?.data?.message || 'Hiba a felhasználónév frissítésekor');
     }
   };
@@ -131,6 +137,7 @@ export default function Settings() {
   };
 
   const handleUpdatePassword = async () => {
+    let decoded = jwtDecode(localStorage.getItem("authToken"))
     if (!currentPassword || !newPassword) {
       setError('Mindkét jelszó mezőt ki kell tölteni');
       return;
@@ -143,10 +150,12 @@ export default function Settings() {
 
     try {
       const token = localStorage.getItem('authToken');
+      const userId = decoded.sub // vagy más forrásból szerzed az id-t
       
       await axios.put('https://localhost:7285/auth/UpdatePassword', {
-        currentPassword,
-        newPassword
+        id: userId, // hozzáadtuk az id mezőt a kérés body-hoz
+        currentPassword: currentPassword,
+        newPassword: newPassword
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -157,15 +166,20 @@ export default function Settings() {
       setNewPassword('');
       setError(null);
     } catch (err) {
-      setError('Hiba a jelszó frissítésekor');
+      setError('Hiba a jelszó frissítésekor: ' + (err.response?.data?.message || err.message));
     }
   };
 
-  const closeModal = () => {
+  const closeAllModals = () => {
     setShowUsernameModal(false);
     setShowEmailModal(false);
     setShowPasswordModal(false);
     setError(null);
+    setSuccess(null);
+  };
+
+  const stopPropagation = (e) => {
+    e.stopPropagation();
   };
 
   if (loading) return <div className="loading">Betöltés...</div>;
@@ -180,12 +194,12 @@ export default function Settings() {
       <div className="settings-section">
         <h2>Fő adatok</h2>
         <div className="settings-item">
-          <span>Felhasználónév: {user.username || 'Nincs megadva'}</span>
-          <button onClick={handleOpenUsernameModal}>Módosítás</button>
+          <span>Felhasználónév: {user?.username || 'Nincs megadva'}</span>
+          <button type="button" className="edit-button" onClick={handleOpenUsernameModal}>Módosítás</button>
         </div>
         <div className="settings-item">
-          <span>Email cím: {user.email || 'Nincs megadva'}</span>
-          <button onClick={handleOpenEmailModal}>Módosítás</button>
+          <span>Email cím: {user?.email || 'Nincs megadva'}</span>
+          <button type="button" className="edit-button" onClick={handleOpenEmailModal}>Módosítás</button>
         </div>
       </div>
 
@@ -193,13 +207,14 @@ export default function Settings() {
         <h2>Biztonság</h2>
         <div className="settings-item">
           <span>Jelszó módosítása</span>
-          <button onClick={handleOpenPasswordModal}>Módosítás</button>
+          <button type="button" className="edit-button" onClick={handleOpenPasswordModal}>Módosítás</button>
         </div>
       </div>
 
+      {/* Username Modal */}
       {showUsernameModal && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className="modal-overlay" onClick={closeAllModals}>
+          <div className="modal-content" onClick={stopPropagation}>
             <h2>Felhasználónév módosítása</h2>
             <input
               type="text"
@@ -208,8 +223,52 @@ export default function Settings() {
               placeholder="Új felhasználónév"
             />
             <div className="modal-actions">
-              <button onClick={handleUpdateUsername}>Mentés</button>
-              <button onClick={closeModal}>Mégse</button>
+              <button type="button" onClick={handleUpdateUsername}>Mentés</button>
+              <button type="button" onClick={closeAllModals}>Mégse</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Email Modal */}
+      {showEmailModal && (
+        <div className="modal-overlay" onClick={closeAllModals}>
+          <div className="modal-content" onClick={stopPropagation}>
+            <h2>Email cím módosítása</h2>
+            <input
+              type="email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+              placeholder="Új email cím"
+            />
+            <div className="modal-actions">
+              <button type="button" onClick={handleUpdateEmail}>Mentés</button>
+              <button type="button" onClick={closeAllModals}>Mégse</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Password Modal */}
+      {showPasswordModal && (
+        <div className="modal-overlay" onClick={closeAllModals}>
+          <div className="modal-content" onClick={stopPropagation}>
+            <h2>Jelszó módosítása</h2>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="Jelenlegi jelszó"
+            />
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Új jelszó"
+            />
+            <div className="modal-actions">
+              <button type="button" onClick={handleUpdatePassword}>Mentés</button>
+              <button type="button" onClick={closeAllModals}>Mégse</button>
             </div>
           </div>
         </div>
