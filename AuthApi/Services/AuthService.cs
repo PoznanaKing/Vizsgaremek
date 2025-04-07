@@ -54,7 +54,10 @@ namespace AuthApi.Services
         {
             var user = await _appDbContext.applicationUsers.
                 FirstOrDefaultAsync(user => user.UserName.ToLower() == loginRequestDto.UserName.ToLower());
-
+            if (user==null)
+            {
+                return new { result = "", Token = "" };
+            }
             bool isValid = await userManager.CheckPasswordAsync(user, loginRequestDto.Password);
 
             if (user == null || isValid == false)
@@ -113,6 +116,20 @@ namespace AuthApi.Services
                 return updateduser;
             }
             return null;
+        }
+        public async Task<bool> UpdatePassword(UserPasswordUpdateDTO userPasswordUpdateDTO)
+        {
+            var user = await userManager.FindByIdAsync(userPasswordUpdateDTO.Id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            var result = await userManager.ChangePasswordAsync(user,
+                userPasswordUpdateDTO.CurrentPassword,
+                userPasswordUpdateDTO.NewPassword);
+
+            return result.Succeeded;
         }
     }
 }

@@ -31,13 +31,13 @@ namespace AuthApi.Controllers
         public async Task<ActionResult> LoginPost(LoginRequestDto loginRequestDto)
         {
             var log = await _auth.Login(loginRequestDto);
-
-            if (log != null)
+            var result = log.GetType().GetProperty("result").GetValue(log, null);
+            if (result == "")
             {
-                return Ok(log);
+                return NotFound();
             }
 
-            return BadRequest();
+            return Ok(log);
         }
 
         [HttpPost("register")]
@@ -173,22 +173,68 @@ namespace AuthApi.Controllers
             return Ok(new { message = "Üzenet sikeresen elküldve!" });
         }
         [HttpPut("UpdateUserData")]
-        public async Task<ActionResult> UpdateUserData(UserDataUpdateDTO userDataUpdateDTO)
+        public async Task<IActionResult> UpdateUserData([FromBody] UserDataUpdateDTO userDataUpdateDTO)
         {
-            if (userDataUpdateDTO != null)
+            try
             {
-                var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Id == userDataUpdateDTO.id);
+                
+                var user = await _appDbContext.Users
+                    .FirstOrDefaultAsync(u => u.Id == userDataUpdateDTO.id);
+
                 if (user == null)
                 {
-                    return NotFound();
+                    return NotFound("User not found");
                 }
-                _auth.UserDataUpdate(userDataUpdateDTO);
-                _appDbContext.applicationUsers.Update(user);
-                await _appDbContext.SaveChangesAsync();
-                return Ok(new { message = "Sikeres módosítás" });
-            }
-            return StatusCode(500, new { message = "Hiányos adat." });
 
+                
+                user.UserName = userDataUpdateDTO.username;
+                user.Email = userDataUpdateDTO.email;
+                user.NormalizedEmail = userDataUpdateDTO.email.ToUpper();
+                user.NormalizedUserName = userDataUpdateDTO.email.ToUpper();
+
+                
+                await _appDbContext.SaveChangesAsync();
+
+                return Ok("User data updated successfully");
+            }
+            catch (Exception ex)
+            {
+                
+                
+                return StatusCode(500, "Internal server error");
+            }
+        }
+        [HttpPut("UpdatePassword")]
+        public async Task<ActionResult> UpdateUserPassword(UserPasswordUpdateDTO userPasswordUpdateDTO)
+        {
+            try
+            {
+                // Find the user by ID
+                var user = await _appDbContext.Users
+                    .FirstOrDefaultAsync(u => u.Id == userPasswordUpdateDTO.Id);
+
+                if (user == null)
+                {
+                    return NotFound(new { message = "A felhasználó nem található!" });
+                }
+
+                // Use the auth service to update password
+                var result = await _auth.UpdatePassword(userPasswordUpdateDTO);
+
+                if (result)
+                {
+                    return Ok(new { message = "Jelszó sikeresen frissítve!" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Jelszó frissítése sikertelen!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log exception (consider adding proper logging)
+                return StatusCode(500, new { message = "Belső szerver hiba történt!" });
+            }
         }
     }
 }

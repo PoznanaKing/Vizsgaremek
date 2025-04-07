@@ -21,4 +21,10 @@ namespace AuthApi.Models.Dtos
     }
     public record UserByIdDTO(string username, string id, string email);
     public record UserDataUpdateDTO(string username, string email, string id);
+    public class UserPasswordUpdateDTO
+    {
+        public string Id { get; set; }
+        public string CurrentPassword { get; set; }
+        public string NewPassword { get; set; }
+    }
 }
