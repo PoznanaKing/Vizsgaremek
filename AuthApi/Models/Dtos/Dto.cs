@@ -3,8 +3,32 @@ using System.Globalization;
 
 namespace AuthApi.Models.Dtos
 {
-    public record LoginRequestDto(string UserName, string Password);
-    public record RegisterRequestDto(string UserName, string Password, string Email, string FullName);
+    public class LoginRequestDto
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+
+        public LoginRequestDto(string userName, string password)
+        {
+            UserName = userName;
+            Password = password;
+        }
+    }
+    public class RegisterRequestDto
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+
+        public RegisterRequestDto(string userName, string password, string email, string fullName)
+        {
+            UserName = userName;
+            Password = password;
+            Email = email;
+            FullName = fullName;
+        }
+    }
     public record AssignRoleRequestDto(string UserName, string RoleName);
 
     public record EmailDTO(string To);
