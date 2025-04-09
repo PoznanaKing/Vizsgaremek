@@ -16,22 +16,26 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Diagnostics;
+using System.Threading;
 
 namespace PMprojectAdminPanel
 {
     public partial class MainWindow : Window
     {
-        private string _jwtToken;
-        private HttpClient _httpClient;
-        private string _currentUserId;
+        public string _jwtToken;
+        public HttpClient _httpClient;
+        public string _currentUserId;
 
         public MainWindow()
         {
+            // Biztosítjuk, hogy STA szálat használunk
+            Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
+
             InitializeComponent();
             InitializeHttpClient();
         }
 
-        private void InitializeHttpClient()
+        public void InitializeHttpClient()
         {
             _httpClient = new HttpClient
             {
@@ -42,7 +46,7 @@ namespace PMprojectAdminPanel
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        private void SetAuthorizationHeader()
+        public void SetAuthorizationHeader()
         {
             if (!string.IsNullOrEmpty(_jwtToken))
             {
@@ -51,7 +55,7 @@ namespace PMprojectAdminPanel
             }
         }
 
-        private async void btnLogin_Click(object sender, RoutedEventArgs e)
+        public async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Password))
             {
@@ -74,7 +78,6 @@ namespace PMprojectAdminPanel
 
                 if (response.IsSuccessStatusCode)
                 {
-                    
                     var jsonResponse = await response.Content.ReadAsStringAsync();
                     var loginResponse = JsonConvert.DeserializeObject<LoginResponseDto>(jsonResponse);
 
@@ -92,7 +95,7 @@ namespace PMprojectAdminPanel
                             .Select(c => c.Value)
                             .ToList();
                         var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
-                  ?? jwtToken.Claims.FirstOrDefault(c => c.Type == "sub");
+                            ?? jwtToken.Claims.FirstOrDefault(c => c.Type == "sub");
                         if (userIdClaim != null)
                         {
                             _currentUserId = userIdClaim.Value;
@@ -103,12 +106,13 @@ namespace PMprojectAdminPanel
                         }
                         if (roles.Contains("Admin"))
                         {
-                            txtLoggedInLabel.Text = $"Bejelentkezve: {loginRequest.Username}";
-                            topPanel.Visibility = Visibility.Visible;
-                            mainGrid.Visibility = Visibility.Collapsed;
-                            navBar.Visibility = Visibility.Visible;
+                            await Dispatcher.InvokeAsync(async () => {
+                                txtLoggedInLabel.Text = $"Bejelentkezve: {loginRequest.Username}";
+                                topPanel.Visibility = Visibility.Visible;
+                                mainGrid.Visibility = Visibility.Collapsed;
+                                navBar.Visibility = Visibility.Visible;
+                            });
 
-                            
                             await LoadPostsAsync();
                         }
                         else
@@ -141,15 +145,15 @@ namespace PMprojectAdminPanel
             }
         }
 
-        private async Task LoadPostsAsync()
+        public async Task LoadPostsAsync()
         {
-            
             try
             {
-                
-                gymPanel.Visibility = Visibility.Collapsed;
-                
-                topPanel.Visibility = Visibility.Visible;
+                await Dispatcher.InvokeAsync(() => {
+                    gymPanel.Visibility = Visibility.Collapsed;
+                    usersPanel.Visibility = Visibility.Collapsed;
+                    topPanel.Visibility = Visibility.Visible;
+                });
 
                 var response = await _httpClient.GetAsync("Posttable/GetAllPostsWithComments");
 
@@ -171,7 +175,9 @@ namespace PMprojectAdminPanel
                             }
                         }
 
-                        postsListView.ItemsSource = posts;
+                        await Dispatcher.InvokeAsync(() => {
+                            postsListView.ItemsSource = posts;
+                        });
                     }
                     else
                     {
@@ -190,9 +196,9 @@ namespace PMprojectAdminPanel
             }
         }
 
-        private async void DeletePost_Click(object sender, RoutedEventArgs e)
+        public async void DeletePost_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsUserInRole("Admin"))
+            if (!await IsUserInRoleAsync("Admin"))
             {
                 MessageBox.Show("Nincs jogosultság!");
                 return;
@@ -230,7 +236,7 @@ namespace PMprojectAdminPanel
             }
         }
 
-        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        public void btnLogout_Click(object sender, RoutedEventArgs e)
         {
             // Token törlése, UI visszaállítása
             _jwtToken = null;
@@ -239,14 +245,16 @@ namespace PMprojectAdminPanel
 
             topPanel.Visibility = Visibility.Collapsed;
             gymPanel.Visibility = Visibility.Collapsed;
+            usersPanel.Visibility = Visibility.Collapsed;
             mainGrid.Visibility = Visibility.Visible;
             navBar.Visibility = Visibility.Collapsed;
 
             postsListView.ItemsSource = null;
             gymsListView.ItemsSource = null;
+            usersListView.ItemsSource = null;
         }
 
-        private bool IsUserInRole(string roleName)
+        public async Task<bool> IsUserInRoleAsync(string roleName)
         {
             if (string.IsNullOrEmpty(_jwtToken))
             {
@@ -273,52 +281,56 @@ namespace PMprojectAdminPanel
             }
         }
 
-        private async void NavigateToPosts(object sender, RoutedEventArgs e)
+        public async void NavigateToPosts(object sender, RoutedEventArgs e)
         {
-            usersPanel.Visibility = Visibility.Collapsed; 
-            gymPanel.Visibility = Visibility.Collapsed;  
-            await LoadPostsAsync();
+            await Dispatcher.InvokeAsync(async () => {
+                usersPanel.Visibility = Visibility.Collapsed;
+                gymPanel.Visibility = Visibility.Collapsed;
+                await LoadPostsAsync();
+            });
         }
 
-        private async void NavigateToGyms(object sender, RoutedEventArgs e)
+        public async void NavigateToGyms(object sender, RoutedEventArgs e)
         {
-            usersPanel.Visibility = Visibility.Collapsed; 
-            topPanel.Visibility = Visibility.Collapsed;   
-            gymPanel.Visibility = Visibility.Visible;     
+            await Dispatcher.InvokeAsync(async () => {
+                usersPanel.Visibility = Visibility.Collapsed;
+                topPanel.Visibility = Visibility.Collapsed;
+                gymPanel.Visibility = Visibility.Visible;
 
-            try
-            {
-                var response = await _httpClient.GetAsync("PlaceTable/GetAllPlaces");
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var jsonResponse = await response.Content.ReadAsStringAsync();
-                    var gyms = JsonConvert.DeserializeObject<List<PlaceDto>>(jsonResponse);
+                    var response = await _httpClient.GetAsync("PlaceTable/GetAllPlaces");
 
-                    if (gyms != null)
+                    if (response.IsSuccessStatusCode)
                     {
-                        gymsListView.ItemsSource = gyms;
+                        var jsonResponse = await response.Content.ReadAsStringAsync();
+                        var gyms = JsonConvert.DeserializeObject<List<PlaceDto>>(jsonResponse);
+
+                        if (gyms != null)
+                        {
+                            gymsListView.ItemsSource = gyms;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nincsenek megjeleníthető edzőtermek.");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Nincsenek megjeleníthető edzőtermek.");
+                        var errorResponse = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Hiba történt az edzőtermek betöltésekor: {errorResponse}");
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    var errorResponse = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Hiba történt az edzőtermek betöltésekor: {errorResponse}");
+                    MessageBox.Show($"Hiba történt: {ex.Message}");
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Hiba történt: {ex.Message}");
-            }
+            });
         }
 
-        private async void DeleteGym_Click(object sender, RoutedEventArgs e)
+        public async void DeleteGym_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsUserInRole("Admin"))
+            if (!await IsUserInRoleAsync("Admin"))
             {
                 MessageBox.Show("Nincs jogosultság!");
                 return;
@@ -327,12 +339,13 @@ namespace PMprojectAdminPanel
             {
                 try
                 {
-                    
                     var response = await _httpClient.DeleteAsync($"PlaceTable/DeletePost/{gym.placeId}");
 
                     if (response.IsSuccessStatusCode)
                     {
-                        NavigateToGyms(null, null);
+                        await Dispatcher.InvokeAsync(() => {
+                            NavigateToGyms(null, null);
+                        });
                     }
                     else
                     {
@@ -349,45 +362,48 @@ namespace PMprojectAdminPanel
                 MessageBox.Show("Érvénytelen edzőterem adatok!");
             }
         }
-        private async void NavigateToUsers(object sender, RoutedEventArgs e)
+
+        public async void NavigateToUsers(object sender, RoutedEventArgs e)
         {
-            topPanel.Visibility = Visibility.Collapsed;  // Posztok panel elrejtése
-            gymPanel.Visibility = Visibility.Collapsed;  // Edzőtermek panel elrejtése
-            usersPanel.Visibility = Visibility.Visible;  // Felhasználók panel megjelenítése
+            await Dispatcher.InvokeAsync(async () => {
+                topPanel.Visibility = Visibility.Collapsed;
+                gymPanel.Visibility = Visibility.Collapsed;
+                usersPanel.Visibility = Visibility.Visible;
 
-            try
-            {
-                var response = await _httpClient.GetAsync("auth/users");
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var jsonResponse = await response.Content.ReadAsStringAsync();
-                    var users = JsonConvert.DeserializeObject<List<UserDto>>(jsonResponse);
+                    var response = await _httpClient.GetAsync("auth/users");
 
-                    if (users != null)
+                    if (response.IsSuccessStatusCode)
                     {
-                        usersListView.ItemsSource = users;
+                        var jsonResponse = await response.Content.ReadAsStringAsync();
+                        var users = JsonConvert.DeserializeObject<List<UserDto>>(jsonResponse);
+
+                        if (users != null)
+                        {
+                            usersListView.ItemsSource = users;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nincsenek megjeleníthető felhasználók.");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Nincsenek megjeleníthető felhasználók.");
+                        var errorResponse = await response.Content.ReadAsStringAsync();
+                        MessageBox.Show($"Hiba történt a felhasználók betöltésekor: {errorResponse}");
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    var errorResponse = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Hiba történt a felhasználók betöltésekor: {errorResponse}");
+                    MessageBox.Show($"Hiba történt: {ex.Message}");
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Hiba történt: {ex.Message}");
-            }
+            });
         }
 
-        private async void DeleteUser_Click(object sender, RoutedEventArgs e)
+        public async void DeleteUser_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsUserInRole("Admin"))
+            if (!await IsUserInRoleAsync("Admin"))
             {
                 MessageBox.Show("Nincs jogosultság!");
                 return;
@@ -401,7 +417,9 @@ namespace PMprojectAdminPanel
 
                     if (response.IsSuccessStatusCode)
                     {
-                        NavigateToUsers(null, null);
+                        await Dispatcher.InvokeAsync(() => {
+                            NavigateToUsers(null, null);
+                        });
                     }
                     else
                     {
@@ -419,47 +437,43 @@ namespace PMprojectAdminPanel
             }
         }
 
-
-        private async void EditGym_Click(object sender, RoutedEventArgs e)
+        public async void EditGym_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsUserInRole("Admin"))
+            if (!await IsUserInRoleAsync("Admin"))
             {
                 MessageBox.Show("Nincs jogosultság!");
                 return;
             }
 
-            
             if (sender is Button button && button.Tag is PlaceDto gym)
             {
                 try
                 {
-                    
                     var editWindow = new Window
                     {
                         Title = "Edzőterem módosítása",
                         Width = 400,
                         Height = 550,
-                        Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2E2E2E"))
+                        Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2E2E2E")),
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                        Owner = this
                     };
 
                     var grid = new Grid { Margin = new Thickness(20) };
 
-                    
-                    for (int i = 0; i < 7; i++)
+                    for (int i = 0; i < 8; i++) // Módosítva 8-ra, hogy helyet hagyjunk a mentés gombnak
                     {
                         grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                     }
 
-                    
-                    var nameTextBox = new TextBox { Text = gym.placename };
-                    var postalCodeTextBox = new TextBox { Text = gym.postalcode.ToString() };
-                    var townNameTextBox = new TextBox { Text = gym.townname };
-                    var streetNameTextBox = new TextBox { Text = gym.streetname };
-                    var storyLevelTextBox = new TextBox { Text = gym.storylevel?.ToString() ?? "" };
-                    var descriptionTextBox = new TextBox { Text = gym.description, TextWrapping = TextWrapping.Wrap, Height = 100 };
-                    var ratingTextBox = new TextBox { Text = gym.rating?.ToString() ?? "" };
+                    var nameTextBox = new TextBox { Text = gym.placename, Margin = new Thickness(0, 2, 0, 5) };
+                    var postalCodeTextBox = new TextBox { Text = gym.postalcode.ToString(), Margin = new Thickness(0, 2, 0, 5) };
+                    var townNameTextBox = new TextBox { Text = gym.townname, Margin = new Thickness(0, 2, 0, 5) };
+                    var streetNameTextBox = new TextBox { Text = gym.streetname, Margin = new Thickness(0, 2, 0, 5) };
+                    var storyLevelTextBox = new TextBox { Text = gym.storylevel?.ToString() ?? "", Margin = new Thickness(0, 2, 0, 5) };
+                    var descriptionTextBox = new TextBox { Text = gym.description, TextWrapping = TextWrapping.Wrap, Height = 100, Margin = new Thickness(0, 2, 0, 5) };
+                    var ratingTextBox = new TextBox { Text = gym.rating?.ToString() ?? "", Margin = new Thickness(0, 2, 0, 5) };
 
-                    
                     AddFormField(grid, 0, "Név:", nameTextBox);
                     AddFormField(grid, 1, "Irányítószám:", postalCodeTextBox);
                     AddFormField(grid, 2, "Város:", townNameTextBox);
@@ -468,30 +482,56 @@ namespace PMprojectAdminPanel
                     AddFormField(grid, 5, "Leírás:", descriptionTextBox);
                     AddFormField(grid, 6, "Értékelés:", ratingTextBox);
 
-                    // Hozzáadjuk a Mentés gombot
                     var saveButton = new Button
                     {
                         Content = "Mentés",
                         Margin = new Thickness(0, 20, 0, 0),
-                        HorizontalAlignment = HorizontalAlignment.Center
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Padding = new Thickness(10, 5, 10, 5)
                     };
 
-                    
                     saveButton.Click += async (s, args) =>
                     {
                         try
                         {
-                            
+                            if (!int.TryParse(postalCodeTextBox.Text, out int postalCode))
+                            {
+                                MessageBox.Show("Az irányítószámnak számnak kell lennie!");
+                                return;
+                            }
+
+                            int? storyLevel = null;
+                            if (!string.IsNullOrEmpty(storyLevelTextBox.Text))
+                            {
+                                if (!int.TryParse(storyLevelTextBox.Text, out int sl))
+                                {
+                                    MessageBox.Show("Az emeletnek számnak kell lennie!");
+                                    return;
+                                }
+                                storyLevel = sl;
+                            }
+
+                            double? rating = null;
+                            if (!string.IsNullOrEmpty(ratingTextBox.Text))
+                            {
+                                if (!double.TryParse(ratingTextBox.Text, out double r))
+                                {
+                                    MessageBox.Show("Az értékelésnek számnak kell lennie!");
+                                    return;
+                                }
+                                rating = r;
+                            }
+
                             var updatedGym = new
                             {
                                 placeId = gym.placeId,
                                 placename = nameTextBox.Text,
-                                postalcode = int.Parse(postalCodeTextBox.Text),
+                                postalcode = postalCode,
                                 townname = townNameTextBox.Text,
                                 streetname = streetNameTextBox.Text,
-                                storylevel = string.IsNullOrEmpty(storyLevelTextBox.Text) ? (int?)null : int.Parse(storyLevelTextBox.Text),
+                                storylevel = storyLevel,
                                 description = descriptionTextBox.Text,
-                                rating = string.IsNullOrEmpty(ratingTextBox.Text) ? (double?)null : double.Parse(ratingTextBox.Text)
+                                rating = rating
                             };
 
                             var jsonContent = new StringContent(
@@ -499,14 +539,14 @@ namespace PMprojectAdminPanel
                                 Encoding.UTF8,
                                 "application/json");
 
-                            
                             var response = await _httpClient.PutAsync($"PlaceTable/EditPlaceData/{updatedGym.placeId}", jsonContent);
 
                             if (response.IsSuccessStatusCode)
                             {
                                 editWindow.Close();
-                                
-                                NavigateToGyms(null, null);
+                                await Dispatcher.InvokeAsync(() => {
+                                    NavigateToGyms(null, null);
+                                });
                             }
                             else
                             {
@@ -520,8 +560,6 @@ namespace PMprojectAdminPanel
                         }
                     };
 
-                    
-                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                     Grid.SetRow(saveButton, 7);
                     grid.Children.Add(saveButton);
 
@@ -533,11 +571,11 @@ namespace PMprojectAdminPanel
                     MessageBox.Show($"Hiba: {ex.Message}");
                 }
             }
-
         }
-        private async void SendMessage_Click(object sender, RoutedEventArgs e)
+
+        public async void SendMessage_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsUserInRole("Admin"))
+            if (!await IsUserInRoleAsync("Admin"))
             {
                 MessageBox.Show("Nincs jogosultság!");
                 return;
@@ -580,17 +618,16 @@ namespace PMprojectAdminPanel
 
                     var messageRequest = new
                     {
-                        senderId = _currentUserId, 
-                        receiverId = receiverId, 
+                        senderId = _currentUserId,
+                        receiverId = receiverId,
                         content = textBox.Text
                     };
-                    
+
                     try
                     {
                         var json = JsonConvert.SerializeObject(messageRequest);
                         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                        // Ellenőrizd, hogy a _httpClient nem null, és a BaseAddress helyesen van beállítva
                         var response = await _httpClient.PostAsync("auth/sendMessage", content);
 
                         if (response.IsSuccessStatusCode)
@@ -621,8 +658,7 @@ namespace PMprojectAdminPanel
             }
         }
 
-
-        private void AddFormField(Grid grid, int row, string label, TextBox textBox)
+        public void AddFormField(Grid grid, int row, string label, TextBox textBox)
         {
             var stackPanel = new StackPanel { Margin = new Thickness(0, 5, 0, 5) };
 
@@ -641,7 +677,6 @@ namespace PMprojectAdminPanel
         }
     }
 
-    
     public class Base64ToImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -673,13 +708,11 @@ namespace PMprojectAdminPanel
         }
     }
 
-    
     public class LoginResponseDto
     {
         public string Token { get; set; }
     }
 
-    
     public class PostDto
     {
         public int PostId { get; set; }
@@ -697,7 +730,6 @@ namespace PMprojectAdminPanel
         public string UserName { get; set; }
     }
 
-    
     public class PlaceDto
     {
         public int placeId { get; set; }
@@ -709,6 +741,7 @@ namespace PMprojectAdminPanel
         public string description { get; set; }
         public double? rating { get; set; }
     }
+
     public class UserDto
     {
         public string userId { get; set; }

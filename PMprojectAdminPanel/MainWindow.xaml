@@ -10,7 +10,7 @@
 
     <Window.Resources>
         <local:Base64ToImageConverter x:Key="Base64Converter"/>
-
+        
         <Style TargetType="Button">
             <Setter Property="Background" Value="#4A4A4A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -114,12 +114,12 @@
 
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0 0 0 10">
                     <TextBlock Text="Felhasználónév" Margin="0 0 0 5"/>
-                    <TextBox x:Name="txtUsername" Width="200"/>
+                    <TextBox x:Name="txtUsername" x:FieldModifier="public" Width="200"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0 0 0 20">
                     <TextBlock Text="Jelszó" Margin="0 0 0 5"/>
-                    <PasswordBox x:Name="txtPassword" Width="200"/>
+                    <PasswordBox x:Name="txtPassword" x:FieldModifier="public" Width="200"/>
                 </StackPanel>
 
                 <Button Grid.Row="3" x:Name="btnLogin" Content="Bejelentkezés" Width="100" 
@@ -128,7 +128,7 @@
 
             <Grid x:Name="topPanel" Visibility="Collapsed">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl x:Name="postsListView">
+                    <ItemsControl x:Name="postsListView" x:FieldModifier="public">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Style="{StaticResource PostCardStyle}">
@@ -154,7 +154,7 @@
 
             <Grid x:Name="gymPanel" Visibility="Collapsed">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl x:Name="gymsListView">
+                    <ItemsControl x:Name="gymsListView" x:FieldModifier="public">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Style="{StaticResource GymCardStyle}">
@@ -196,7 +196,7 @@
 
             <Grid x:Name="usersPanel" Visibility="Collapsed">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl x:Name="usersListView">
+                    <ItemsControl x:Name="usersListView" x:FieldModifier="public">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Style="{StaticResource GymCardStyle}">
@@ -221,4 +221,5 @@
             </Grid>
         </Grid>
     </Grid>
+    
 </Window>
